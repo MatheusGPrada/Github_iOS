@@ -9,73 +9,70 @@ import UIKit
 
 class HomeViewController: UIViewController {
     
-    public var completionHandler: ((Bool) -> Void)?
+    private var gitImageView: UIImageView = {
+        let gitImageView = UIImageView()
+        
+        gitImageView.contentMode = .scaleAspectFit
+        gitImageView.image = UIImage(named: "Logo.jpeg");
+        gitImageView.translatesAutoresizingMaskIntoConstraints = false
+        
+        return gitImageView
+    }()
+    
+    private lazy var usernameTextField: UITextField =  {
+        let usernameTextField = UITextField()
+        
+        usernameTextField.backgroundColor = .white
+        usernameTextField.placeholder = "Nome de usuário"
+        usernameTextField.borderStyle = .roundedRect
+        usernameTextField.translatesAutoresizingMaskIntoConstraints = false
+        usernameTextField.addTarget(self, action: #selector(validTextField), for: .editingDidEndOnExit)
+        
+        return usernameTextField
+    }()
     
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        let gitImageView = gitImageView()
-        let usernameTextField = usernameTextField()
-        
         self.view.addSubview(gitImageView)
         self.view.addSubview(usernameTextField)
         
-        setGitImageConstraints(gitImageView: gitImageView)
-        setUsernameInputConstraints(usernameTextField: usernameTextField)
+        setGitImageConstraints()
+        setUsernameInputConstraints()
     }
     
     @objc func validTextField(textField: UITextField) {
         guard let username = textField.text else {
             return
         }
-        
-        HomeInteractor().validUsername(username: username) { [weak self] success in
-            DispatchQueue.main.async {
-                self?.completionHandler?(success)
-            }
-        }
-    }
-    // MARK: - UI Components
-    
-    private func gitImageView() -> UIView {
-        let gitImageView = UIImageView()
-        
-        gitImageView.contentMode = .scaleAspectFit
-        gitImageView.image = UIImage(named: "Logo.jpeg");
-        
-        return gitImageView
+        let interactor = HomeInteractor()
+        interactor.validUsername(username: username)
     }
     
-    private func usernameTextField() -> UIView {
-        let usernameTextField = UITextField()
-        
-        usernameTextField.backgroundColor = .white
-        usernameTextField.placeholder = "Nome de usuário"
-        usernameTextField.borderStyle = .roundedRect
-        usernameTextField.addTarget(self, action: #selector(validTextField), for: .editingDidEndOnExit)
-        
-        return usernameTextField
+    func showErrorAlert(title: String, description: String){
+        let alertController = UIAlertController(title: title, message: description, preferredStyle: .alert)
+        alertController.addAction(UIAlertAction(title: "OK", style: UIAlertAction.Style.default))
+        alertController.show()
     }
-    
+
     // MARK: - Constraints
     
-    private func setGitImageConstraints(gitImageView: UIView) {
-        gitImageView.translatesAutoresizingMaskIntoConstraints = false
-            let horizontalConstraint = NSLayoutConstraint(item: gitImageView, attribute: NSLayoutConstraint.Attribute.centerX, relatedBy: NSLayoutConstraint.Relation.equal, toItem: view, attribute: NSLayoutConstraint.Attribute.centerX, multiplier: 1, constant: 0)
-            let verticalConstraint = NSLayoutConstraint(item: gitImageView, attribute: NSLayoutConstraint.Attribute.centerY, relatedBy: NSLayoutConstraint.Relation.equal, toItem: view, attribute: NSLayoutConstraint.Attribute.centerY, multiplier: 1, constant: -100)
-            let widthConstraint = NSLayoutConstraint(item: gitImageView, attribute: NSLayoutConstraint.Attribute.width, relatedBy: NSLayoutConstraint.Relation.equal, toItem: nil, attribute: NSLayoutConstraint.Attribute.notAnAttribute, multiplier: 1, constant: 200)
-            let heightConstraint = NSLayoutConstraint(item: gitImageView, attribute: NSLayoutConstraint.Attribute.height, relatedBy: NSLayoutConstraint.Relation.equal, toItem: nil, attribute: NSLayoutConstraint.Attribute.notAnAttribute, multiplier: 1, constant: 200)
-            view.addConstraints([horizontalConstraint, verticalConstraint, widthConstraint, heightConstraint])
+    private func setGitImageConstraints() {
+        gitImageView.backgroundColor = .red
+        NSLayoutConstraint.activate([
+            gitImageView.centerXAnchor.constraint(equalTo: view.centerXAnchor),
+            view.centerYAnchor.constraint(equalTo: gitImageView.centerYAnchor, constant: 100),
+            gitImageView.widthAnchor.constraint(equalToConstant: 200),
+            gitImageView.heightAnchor.constraint(equalToConstant: 200),
+        ])
     }
     
-    private func setUsernameInputConstraints(usernameTextField: UIView) {
-        usernameTextField.translatesAutoresizingMaskIntoConstraints = false
-            let horizontalConstraint = NSLayoutConstraint(item: usernameTextField, attribute: NSLayoutConstraint.Attribute.centerX, relatedBy: NSLayoutConstraint.Relation.equal, toItem: view, attribute: NSLayoutConstraint.Attribute.centerX, multiplier: 1, constant: 0)
-            let verticalConstraint = NSLayoutConstraint(item: usernameTextField, attribute: NSLayoutConstraint.Attribute.centerY, relatedBy: NSLayoutConstraint.Relation.equal, toItem: view, attribute: NSLayoutConstraint.Attribute.centerY, multiplier: 1, constant: 0)
-            let widthConstraint = NSLayoutConstraint(item: usernameTextField, attribute: NSLayoutConstraint.Attribute.width, relatedBy: NSLayoutConstraint.Relation.equal, toItem: nil, attribute: NSLayoutConstraint.Attribute.notAnAttribute, multiplier: 1, constant: 200)
-            let heightConstraint = NSLayoutConstraint(item: usernameTextField, attribute: NSLayoutConstraint.Attribute.height, relatedBy: NSLayoutConstraint.Relation.equal, toItem: nil, attribute: NSLayoutConstraint.Attribute.notAnAttribute, multiplier: 1, constant: 50)
-            view.addConstraints([horizontalConstraint, verticalConstraint, widthConstraint, heightConstraint])
+    private func setUsernameInputConstraints() {
+        NSLayoutConstraint.activate([
+            usernameTextField.centerXAnchor.constraint(equalTo: view.centerXAnchor),
+            usernameTextField.centerYAnchor.constraint(equalTo: gitImageView.centerYAnchor, constant: 100),
+            usernameTextField.widthAnchor.constraint(equalToConstant: 200),
+            usernameTextField.heightAnchor.constraint(equalToConstant: 50),
+        ])
     }
 }
-
-

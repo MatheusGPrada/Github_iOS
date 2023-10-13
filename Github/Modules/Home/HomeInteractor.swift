@@ -6,25 +6,26 @@
 //
 
 import Foundation
-import UIKit
 
 class HomeInteractor {
+    
+    lazy var presenter = HomePresenter()
     
     struct Constants {
         static let apiURL = "https://api.github.com/users/"
     }
     
-    func validUsername(username: String, completion: @escaping(Bool) -> Void) {
+    func validUsername(username: String) {
         
         if(username.isEmpty){
-            HomePresenter().showEmptyUserAlert()
+            presenter.showEmptyUserAlert()
             return
         }
         
-        getGithubUserInfo(username: username, completion: completion)
+        getGithubUserInfo(username: username)
     }
     
-    private func getGithubUserInfo(username: String, completion: @escaping(Bool) -> Void) {
+    private func getGithubUserInfo(username: String) {
         guard let url = URL(string: Constants.apiURL + username) else {
             return
         }
@@ -36,17 +37,15 @@ class HomeInteractor {
         URLSession.shared.dataTask(with: url) { (data, res, err) in
 
             guard let data = data else {
-                  return
+                return
             }
 
             do {
                 let json = try JSONDecoder().decode(UserInfo.self, from: data)
                 print("Result: \(json)")
-                completion(true)
             } catch {
                 DispatchQueue.main.async {
-                    HomePresenter().showUserNotFoundAlert()
-                    completion(false)
+                    self.presenter.showUserNotFoundAlert()
                 }
             }
 

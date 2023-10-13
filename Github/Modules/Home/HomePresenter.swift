@@ -6,20 +6,35 @@
 //
 
 import Foundation
-import UIKit
 
 class HomePresenter {
+    
+    enum AlertProps {
+        enum EmptyUser {
+            static let title = "Usuario vazio"
+            static let description = "Informe um usuário"
+        }
+        enum UserNotFound {
+            static let title = "Usuario não encontrado"
+            static let description = "Não foi encontrado um usuário do Github com o nome informado"
+        }
+    }
 
     func showEmptyUserAlert() {
-        let alertController = UIAlertController(title: "Usuario vazio", message: "Informe um usuário", preferredStyle: .alert)
-        alertController.addAction(UIAlertAction(title: "OK", style: UIAlertAction.Style.default))
-        alertController.show()
+        let viewController = HomeViewController()
+        viewController.showErrorAlert(title: AlertProps.EmptyUser.title, description: AlertProps.EmptyUser.description)
     }
     
     func showUserNotFoundAlert() {
-        let alertController = UIAlertController(title: "Usuario não encontrado", message: "Não foi encontrado um usuário do Github com o nome informado", preferredStyle: .alert)
-        alertController.addAction(UIAlertAction(title: "OK", style: UIAlertAction.Style.default))
-        alertController.show()
+        let viewController = HomeViewController()
+        viewController.showErrorAlert(title: AlertProps.UserNotFound.title, description: AlertProps.UserNotFound.description)
+    }
+    
+    func navigateToUserInfo() {
+//        let vc = SettingsViewController()
+//        vc.title = "Settings"
+//        vc.navigationItem.largeTitleDisplayMode = .never
+//        navigationController?.pushViewController(vc, animated: true)
     }
     
 }
