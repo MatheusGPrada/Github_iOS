@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		2F67C6502ADC3B1F005A60AE /* HomeFactory.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2F67C64F2ADC3B1F005A60AE /* HomeFactory.swift */; };
+		2F67C6522ADC4E3C005A60AE /* UserInfoFactory.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2F67C6512ADC4E3C005A60AE /* UserInfoFactory.swift */; };
 		2FB95FA02AD87CEA00DF96DD /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2FB95F9F2AD87CEA00DF96DD /* AppDelegate.swift */; };
 		2FB95FA22AD87CEA00DF96DD /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2FB95FA12AD87CEA00DF96DD /* SceneDelegate.swift */; };
 		2FB95FA42AD87CEA00DF96DD /* HomeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2FB95FA32AD87CEA00DF96DD /* HomeViewController.swift */; };
@@ -19,6 +21,8 @@
 		2FB95FD62AD990DC00DF96DD /* HomePresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2FB95FD52AD990DC00DF96DD /* HomePresenter.swift */; };
 		2FB95FD82AD990E600DF96DD /* HomeInteractor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2FB95FD72AD990E600DF96DD /* HomeInteractor.swift */; };
 		2FB95FDD2AD9B6C500DF96DD /* UserInfo.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2FB95FDC2AD9B6C500DF96DD /* UserInfo.swift */; };
+		2FB95FE02AD9F9E700DF96DD /* UserInfoViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2FB95FDF2AD9F9E600DF96DD /* UserInfoViewController.swift */; };
+		2FB95FE42ADB464A00DF96DD /* HomeRouter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2FB95FE32ADB464A00DF96DD /* HomeRouter.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -39,6 +43,8 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		2F67C64F2ADC3B1F005A60AE /* HomeFactory.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeFactory.swift; sourceTree = "<group>"; };
+		2F67C6512ADC4E3C005A60AE /* UserInfoFactory.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserInfoFactory.swift; sourceTree = "<group>"; };
 		2FB95F9C2AD87CEA00DF96DD /* Github.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Github.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		2FB95F9F2AD87CEA00DF96DD /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		2FB95FA12AD87CEA00DF96DD /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -55,6 +61,8 @@
 		2FB95FD52AD990DC00DF96DD /* HomePresenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomePresenter.swift; sourceTree = "<group>"; };
 		2FB95FD72AD990E600DF96DD /* HomeInteractor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeInteractor.swift; sourceTree = "<group>"; };
 		2FB95FDC2AD9B6C500DF96DD /* UserInfo.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserInfo.swift; sourceTree = "<group>"; };
+		2FB95FDF2AD9F9E600DF96DD /* UserInfoViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserInfoViewController.swift; sourceTree = "<group>"; };
+		2FB95FE32ADB464A00DF96DD /* HomeRouter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeRouter.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -144,6 +152,7 @@
 		2FB95FD92AD994EC00DF96DD /* Modules */ = {
 			isa = PBXGroup;
 			children = (
+				2FB95FDE2AD9F9D300DF96DD /* UserInfo */,
 				2FB95FDB2AD9B6AC00DF96DD /* Models */,
 				2FB95FDA2AD994F400DF96DD /* Home */,
 			);
@@ -156,6 +165,8 @@
 				2FB95FA32AD87CEA00DF96DD /* HomeViewController.swift */,
 				2FB95FD72AD990E600DF96DD /* HomeInteractor.swift */,
 				2FB95FD52AD990DC00DF96DD /* HomePresenter.swift */,
+				2FB95FE32ADB464A00DF96DD /* HomeRouter.swift */,
+				2F67C64F2ADC3B1F005A60AE /* HomeFactory.swift */,
 			);
 			path = Home;
 			sourceTree = "<group>";
@@ -166,6 +177,15 @@
 				2FB95FDC2AD9B6C500DF96DD /* UserInfo.swift */,
 			);
 			path = Models;
+			sourceTree = "<group>";
+		};
+		2FB95FDE2AD9F9D300DF96DD /* UserInfo */ = {
+			isa = PBXGroup;
+			children = (
+				2FB95FDF2AD9F9E600DF96DD /* UserInfoViewController.swift */,
+				2F67C6512ADC4E3C005A60AE /* UserInfoFactory.swift */,
+			);
+			path = UserInfo;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -299,11 +319,15 @@
 			buildActionMask = 2147483647;
 			files = (
 				2FB95FA42AD87CEA00DF96DD /* HomeViewController.swift in Sources */,
+				2F67C6502ADC3B1F005A60AE /* HomeFactory.swift in Sources */,
+				2FB95FE02AD9F9E700DF96DD /* UserInfoViewController.swift in Sources */,
 				2FB95FA02AD87CEA00DF96DD /* AppDelegate.swift in Sources */,
 				2FB95FA22AD87CEA00DF96DD /* SceneDelegate.swift in Sources */,
 				2FB95FD82AD990E600DF96DD /* HomeInteractor.swift in Sources */,
 				2FB95FD62AD990DC00DF96DD /* HomePresenter.swift in Sources */,
 				2FB95FDD2AD9B6C500DF96DD /* UserInfo.swift in Sources */,
+				2FB95FE42ADB464A00DF96DD /* HomeRouter.swift in Sources */,
+				2F67C6522ADC4E3C005A60AE /* UserInfoFactory.swift in Sources */,
 				2FB95FD12AD8888200DF96DD /* Extensions.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

@@ -7,7 +7,15 @@
 
 import Foundation
 
+protocol HomePresenterProtocol {
+    func showEmptyUserAlert()
+    func showUserNotFoundAlert()
+    func saveDataAndNavigate(data: UserInfo)
+}
+
 class HomePresenter {
+    
+    private weak var view: HomeViewControllerProtocol?
     
     enum AlertProps {
         enum EmptyUser {
@@ -19,22 +27,25 @@ class HomePresenter {
             static let description = "Não foi encontrado um usuário do Github com o nome informado"
         }
     }
+    
+    init(view: HomeViewControllerProtocol?) {
+        self.view = view
+    }
+}
 
+extension HomePresenter: HomePresenterProtocol {
     func showEmptyUserAlert() {
-        let viewController = HomeViewController()
-        viewController.showErrorAlert(title: AlertProps.EmptyUser.title, description: AlertProps.EmptyUser.description)
+        view?.showErrorAlert(title: AlertProps.EmptyUser.title, description: AlertProps.EmptyUser.description)
     }
     
     func showUserNotFoundAlert() {
-        let viewController = HomeViewController()
-        viewController.showErrorAlert(title: AlertProps.UserNotFound.title, description: AlertProps.UserNotFound.description)
+        view?.showErrorAlert(title: AlertProps.UserNotFound.title, description: AlertProps.UserNotFound.description)
     }
     
-    func navigateToUserInfo() {
-//        let vc = SettingsViewController()
-//        vc.title = "Settings"
-//        vc.navigationItem.largeTitleDisplayMode = .never
-//        navigationController?.pushViewController(vc, animated: true)
+    func saveDataAndNavigate(data: UserInfo) {
+        if let encoded = try? JSONEncoder().encode(data) {
+            UserDefaults.standard.set(encoded, forKey: "user_info")
+        }
+        view?.showViewController(viewController: UserInfoFactory.build())
     }
-    
 }

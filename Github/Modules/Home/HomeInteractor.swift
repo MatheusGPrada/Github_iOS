@@ -7,22 +7,20 @@
 
 import Foundation
 
+protocol HomeInteractorProtocol {
+    func validUsername(username: String)
+}
+
 class HomeInteractor {
     
-    lazy var presenter = HomePresenter()
+    var presenter: HomePresenterProtocol?
     
     struct Constants {
         static let apiURL = "https://api.github.com/users/"
     }
     
-    func validUsername(username: String) {
-        
-        if(username.isEmpty){
-            presenter.showEmptyUserAlert()
-            return
-        }
-        
-        getGithubUserInfo(username: username)
+    init(presenter: HomePresenterProtocol?) {
+        self.presenter = presenter
     }
     
     private func getGithubUserInfo(username: String) {
@@ -42,13 +40,25 @@ class HomeInteractor {
 
             do {
                 let json = try JSONDecoder().decode(UserInfo.self, from: data)
-                print("Result: \(json)")
+                DispatchQueue.main.async {
+                    self.presenter?.saveDataAndNavigate(data: json)
+                }
             } catch {
                 DispatchQueue.main.async {
-                    self.presenter.showUserNotFoundAlert()
+                    self.presenter?.showUserNotFoundAlert()
                 }
             }
 
         }.resume()
+    }
+}
+
+extension HomeInteractor: HomeInteractorProtocol {
+    func validUsername(username: String) {
+        if(username.isEmpty){
+            presenter?.showEmptyUserAlert()
+            return
+        }
+        getGithubUserInfo(username: username)
     }
 }

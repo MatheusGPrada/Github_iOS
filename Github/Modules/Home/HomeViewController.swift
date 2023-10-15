@@ -7,7 +7,14 @@
 
 import UIKit
 
+protocol HomeViewControllerProtocol: AnyObject {
+    func showErrorAlert(title: String, description: String)
+    func showViewController(viewController: UIViewController)
+}
+
 class HomeViewController: UIViewController {
+    
+    var interactor: HomeInteractorProtocol?
     
     private var gitImageView: UIImageView = {
         let gitImageView = UIImageView()
@@ -34,6 +41,8 @@ class HomeViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        view.backgroundColor = .black
+        
         self.view.addSubview(gitImageView)
         self.view.addSubview(usernameTextField)
         
@@ -45,20 +54,12 @@ class HomeViewController: UIViewController {
         guard let username = textField.text else {
             return
         }
-        let interactor = HomeInteractor()
-        interactor.validUsername(username: username)
+        interactor?.validUsername(username: username)
     }
     
-    func showErrorAlert(title: String, description: String){
-        let alertController = UIAlertController(title: title, message: description, preferredStyle: .alert)
-        alertController.addAction(UIAlertAction(title: "OK", style: UIAlertAction.Style.default))
-        alertController.show()
-    }
-
     // MARK: - Constraints
     
     private func setGitImageConstraints() {
-        gitImageView.backgroundColor = .red
         NSLayoutConstraint.activate([
             gitImageView.centerXAnchor.constraint(equalTo: view.centerXAnchor),
             view.centerYAnchor.constraint(equalTo: gitImageView.centerYAnchor, constant: 100),
@@ -75,4 +76,17 @@ class HomeViewController: UIViewController {
             usernameTextField.heightAnchor.constraint(equalToConstant: 50),
         ])
     }
+}
+
+extension HomeViewController: HomeViewControllerProtocol {
+    func showViewController(viewController: UIViewController) {
+        navigationController?.pushViewController(viewController, animated: true)
+    }
+    
+    func showErrorAlert(title: String, description: String){
+        let alertController = UIAlertController(title: title, message: description, preferredStyle: .alert)
+        alertController.addAction(UIAlertAction(title: "OK", style: UIAlertAction.Style.default))
+        present(alertController, animated: true, completion: nil)
+    }
+
 }

@@ -6,3 +6,17 @@
 //
 
 import Foundation
+import UIKit
+
+class HomeRouter {
+    weak var view: HomeViewController?
+    
+    init(view: HomeViewController) {
+        self.view = view
+    }
+    
+    func navigateToUserInfo() {
+        let userInfo = UserInfoViewController()
+        view?.navigationController?.pushViewController(userInfo, animated: true)
+    }
+}
