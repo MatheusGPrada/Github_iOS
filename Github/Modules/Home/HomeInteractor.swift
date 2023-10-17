@@ -11,15 +11,15 @@ protocol HomeInteractorProtocol {
     func validUsername(username: String)
 }
 
-class HomeInteractor {
+final class HomeInteractor {
     
-    var presenter: HomePresenterProtocol?
+    let presenter: HomePresenterProtocol
     
     struct Constants {
         static let apiURL = "https://api.github.com/users/"
     }
     
-    init(presenter: HomePresenterProtocol?) {
+    init(presenter: HomePresenterProtocol) {
         self.presenter = presenter
     }
     
@@ -27,10 +27,6 @@ class HomeInteractor {
         guard let url = URL(string: Constants.apiURL + username) else {
             return
         }
-        
-        var request = URLRequest(url: url)
-        request.httpMethod = "GET"
-        request.setValue("application/x-www-form-urlencoded ", forHTTPHeaderField: "Content-Type")
         
         URLSession.shared.dataTask(with: url) { (data, res, err) in
 
@@ -40,12 +36,23 @@ class HomeInteractor {
 
             do {
                 let json = try JSONDecoder().decode(UserInfo.self, from: data)
-                DispatchQueue.main.async {
-                    self.presenter?.saveDataAndNavigate(data: json)
-                }
+                let imageURL = URL(string: json.avatar_url)!
+                
+                URLSession.shared.dataTask(with: imageURL) { (data, response, error) in
+                    if let error = error {
+                        print("Error: \(error)")
+                        return
+                    }
+                    let imageData = data!
+                    
+                    DispatchQueue.main.async {
+                        self.presenter.navigateToUserInfo(data: json, imageData: imageData)
+                    }
+                    
+                }.resume()
             } catch {
                 DispatchQueue.main.async {
-                    self.presenter?.showUserNotFoundAlert()
+                    self.presenter.showUserNotFoundAlert()
                 }
             }
 
@@ -56,7 +63,7 @@ class HomeInteractor {
 extension HomeInteractor: HomeInteractorProtocol {
     func validUsername(username: String) {
         if(username.isEmpty){
-            presenter?.showEmptyUserAlert()
+            presenter.showEmptyUserAlert()
             return
         }
         getGithubUserInfo(username: username)

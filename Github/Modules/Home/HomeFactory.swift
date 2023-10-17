@@ -9,12 +9,11 @@ import UIKit
 
 struct HomeFactory {
     static func build() -> UIViewController {
-        let view = HomeViewController()
-        let presenter = HomePresenter(view: view)
+        let presenter = HomePresenter()
         let interactor = HomeInteractor(presenter: presenter)
-        
-        view.interactor = interactor
+        let view = HomeViewController(interactor: interactor)
 
+        presenter.view = view
         return view
     }
 }

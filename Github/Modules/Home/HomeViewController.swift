@@ -12,75 +12,19 @@ protocol HomeViewControllerProtocol: AnyObject {
     func showViewController(viewController: UIViewController)
 }
 
-class HomeView: UIView {
-    var gitImageView: UIImageView = {
-        let gitImageView = UIImageView()
-        
-        gitImageView.contentMode = .scaleAspectFit
-        gitImageView.image = UIImage(named: "Logo.jpeg");
-        gitImageView.translatesAutoresizingMaskIntoConstraints = false
-        
-        return gitImageView
-    }()
+final class HomeViewController: UIViewController {
     
-    lazy var usernameTextField: UITextField =  {
-        let usernameTextField = UITextField()
-        
-        usernameTextField.backgroundColor = .white
-        usernameTextField.placeholder = "Nome de usuário"
-        usernameTextField.borderStyle = .roundedRect
-        usernameTextField.translatesAutoresizingMaskIntoConstraints = false
-        
-        return usernameTextField
-    }()
+    let interactor: HomeInteractorProtocol
+    lazy var rootView = HomeView()
     
-    override init(frame: CGRect) {
-        super.init(frame: frame)
-        
-        setupUI()
+    init(interactor: HomeInteractorProtocol) {
+        self.interactor = interactor
+        super.init(nibName: nil, bundle: nil)
     }
     
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
-    
-   
-    
-    func setupUI() {
-        backgroundColor = .black
-        
-        addSubview(gitImageView)
-        addSubview(usernameTextField)
-        
-        setGitImageConstraints()
-        setUsernameInputConstraints()
-    }
-    
-    // MARK: - Constraints
-    
-    private func setGitImageConstraints() {
-        NSLayoutConstraint.activate([
-            gitImageView.centerXAnchor.constraint(equalTo: centerXAnchor),
-            centerYAnchor.constraint(equalTo: gitImageView.centerYAnchor, constant: 100),
-            gitImageView.widthAnchor.constraint(equalToConstant: 200),
-            gitImageView.heightAnchor.constraint(equalToConstant: 200),
-        ])
-    }
-    
-    private func setUsernameInputConstraints() {
-        NSLayoutConstraint.activate([
-            usernameTextField.centerXAnchor.constraint(equalTo: centerXAnchor),
-            usernameTextField.centerYAnchor.constraint(equalTo: gitImageView.centerYAnchor, constant: 100),
-            usernameTextField.widthAnchor.constraint(equalToConstant: 200),
-            usernameTextField.heightAnchor.constraint(equalToConstant: 50),
-        ])
-    }
-}
-
-class HomeViewController: UIViewController {
-    
-    var interactor: HomeInteractorProtocol?
-    lazy var rootView = HomeView()
     
     override func loadView() {
         view = rootView
@@ -96,7 +40,7 @@ class HomeViewController: UIViewController {
         guard let username = textField.text else {
             return
         }
-        interactor?.validUsername(username: username)
+        interactor.validUsername(username: username)
     }
 }
 

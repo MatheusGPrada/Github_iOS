@@ -10,12 +10,12 @@ import Foundation
 protocol HomePresenterProtocol {
     func showEmptyUserAlert()
     func showUserNotFoundAlert()
-    func saveDataAndNavigate(data: UserInfo)
+    func navigateToUserInfo(data: UserInfo, imageData: Data)
 }
 
-class HomePresenter {
+final class HomePresenter {
     
-    private weak var view: HomeViewControllerProtocol?
+    weak var view: HomeViewControllerProtocol?
     
     enum AlertProps {
         enum EmptyUser {
@@ -26,10 +26,6 @@ class HomePresenter {
             static let title = "Usuario não encontrado"
             static let description = "Não foi encontrado um usuário do Github com o nome informado"
         }
-    }
-    
-    init(view: HomeViewControllerProtocol?) {
-        self.view = view
     }
 }
 
@@ -42,11 +38,7 @@ extension HomePresenter: HomePresenterProtocol {
         view?.showErrorAlert(title: AlertProps.UserNotFound.title, description: AlertProps.UserNotFound.description)
     }
     
-    func saveDataAndNavigate(data: UserInfo) {
-        if let encoded = try? JSONEncoder().encode(data) {
-            UserDefaults.standard.set(encoded, forKey: "user_info")
-        }
-        // TODO
-        view?.showViewController(viewController: UserInfoFactory.build())
+    func navigateToUserInfo(data: UserInfo, imageData: Data) {
+        view?.showViewController(viewController: UserInfoFactory.build(userInfo: data, imageData: imageData))
     }
 }
