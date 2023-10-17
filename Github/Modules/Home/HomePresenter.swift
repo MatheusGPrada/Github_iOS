@@ -46,6 +46,7 @@ extension HomePresenter: HomePresenterProtocol {
         if let encoded = try? JSONEncoder().encode(data) {
             UserDefaults.standard.set(encoded, forKey: "user_info")
         }
+        // TODO
         view?.showViewController(viewController: UserInfoFactory.build())
     }
 }

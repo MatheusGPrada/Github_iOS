@@ -9,6 +9,8 @@ import UIKit
 
 class UserInfoViewController: UIViewController {
     
+    var interactor: UserInfoInteractorProtocol?
+    
     var userInfo: UserInfo = {
         let encoded = UserDefaults.standard.value(forKey: "user_info") as! Data
         return try! JSONDecoder().decode(UserInfo.self, from: encoded)
@@ -17,9 +19,23 @@ class UserInfoViewController: UIViewController {
     private func userImageView() -> UIImageView {
         let userImageView = UIImageView()
         
+        if let imageURL = URL(string: userInfo.avatar_url) {
+            URLSession.shared.dataTask(with: imageURL) { (data, response, error) in
+                if let error = error {
+                    print("Error: \(error)")
+                    return
+                }
+                if let data = data, let image = UIImage(data: data) {
+                    DispatchQueue.main.async {
+                        userImageView.image = image
+                    }
+                }
+            }.resume()
+        }
+        
         userImageView.contentMode = .scaleAspectFit
-        //use userInfo.avatar_url
-        userImageView.image = UIImage(named: "Logo.jpeg");
+//        let userImage = interactor?.getUserImage(url: userInfo.avatar_url)
+//        userImageView.image = UIImage(data: userImage!)
         userImageView.translatesAutoresizingMaskIntoConstraints = false
         
         return userImageView

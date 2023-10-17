@@ -14,7 +14,7 @@ struct HomeFactory {
         let interactor = HomeInteractor(presenter: presenter)
         
         view.interactor = interactor
-        
+
         return view
     }
 }

@@ -11,9 +11,9 @@ struct UserInfoFactory {
     static func build() -> UIViewController {
         let view = UserInfoViewController()
 //        let presenter = HomePresenter(view: view)
-//        let interactor = HomeInteractor(presenter: presenter)
+        let interactor = UserInfoInteractor()
         
-//        view.interactor = interactor
+        view.interactor = interactor
         
         return view
     }

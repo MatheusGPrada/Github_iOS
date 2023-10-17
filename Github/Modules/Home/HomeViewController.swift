@@ -12,11 +12,8 @@ protocol HomeViewControllerProtocol: AnyObject {
     func showViewController(viewController: UIViewController)
 }
 
-class HomeViewController: UIViewController {
-    
-    var interactor: HomeInteractorProtocol?
-    
-    private var gitImageView: UIImageView = {
+class HomeView: UIView {
+    var gitImageView: UIImageView = {
         let gitImageView = UIImageView()
         
         gitImageView.contentMode = .scaleAspectFit
@@ -26,43 +23,45 @@ class HomeViewController: UIViewController {
         return gitImageView
     }()
     
-    private lazy var usernameTextField: UITextField =  {
+    lazy var usernameTextField: UITextField =  {
         let usernameTextField = UITextField()
         
         usernameTextField.backgroundColor = .white
         usernameTextField.placeholder = "Nome de usuário"
         usernameTextField.borderStyle = .roundedRect
         usernameTextField.translatesAutoresizingMaskIntoConstraints = false
-        usernameTextField.addTarget(self, action: #selector(validTextField), for: .editingDidEndOnExit)
         
         return usernameTextField
     }()
     
-    override func viewDidLoad() {
-        super.viewDidLoad()
+    override init(frame: CGRect) {
+        super.init(frame: frame)
         
-        view.backgroundColor = .black
+        setupUI()
+    }
+    
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+    
+   
+    
+    func setupUI() {
+        backgroundColor = .black
         
-        self.view.addSubview(gitImageView)
-        self.view.addSubview(usernameTextField)
+        addSubview(gitImageView)
+        addSubview(usernameTextField)
         
         setGitImageConstraints()
         setUsernameInputConstraints()
-    }
-    
-    @objc func validTextField(textField: UITextField) {
-        guard let username = textField.text else {
-            return
-        }
-        interactor?.validUsername(username: username)
     }
     
     // MARK: - Constraints
     
     private func setGitImageConstraints() {
         NSLayoutConstraint.activate([
-            gitImageView.centerXAnchor.constraint(equalTo: view.centerXAnchor),
-            view.centerYAnchor.constraint(equalTo: gitImageView.centerYAnchor, constant: 100),
+            gitImageView.centerXAnchor.constraint(equalTo: centerXAnchor),
+            centerYAnchor.constraint(equalTo: gitImageView.centerYAnchor, constant: 100),
             gitImageView.widthAnchor.constraint(equalToConstant: 200),
             gitImageView.heightAnchor.constraint(equalToConstant: 200),
         ])
@@ -70,11 +69,34 @@ class HomeViewController: UIViewController {
     
     private func setUsernameInputConstraints() {
         NSLayoutConstraint.activate([
-            usernameTextField.centerXAnchor.constraint(equalTo: view.centerXAnchor),
+            usernameTextField.centerXAnchor.constraint(equalTo: centerXAnchor),
             usernameTextField.centerYAnchor.constraint(equalTo: gitImageView.centerYAnchor, constant: 100),
             usernameTextField.widthAnchor.constraint(equalToConstant: 200),
             usernameTextField.heightAnchor.constraint(equalToConstant: 50),
         ])
+    }
+}
+
+class HomeViewController: UIViewController {
+    
+    var interactor: HomeInteractorProtocol?
+    lazy var rootView = HomeView()
+    
+    override func loadView() {
+        view = rootView
+    }
+    
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        
+        rootView.usernameTextField.addTarget(self, action: #selector(validTextField), for: .editingDidEndOnExit)
+    }
+    
+    @objc func validTextField(textField: UITextField) {
+        guard let username = textField.text else {
+            return
+        }
+        interactor?.validUsername(username: username)
     }
 }
 
