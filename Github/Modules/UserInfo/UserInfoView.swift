@@ -23,30 +23,29 @@ final class UserInfoView: UIView {
         let userImageView = UIImageView()
         
         userImageView.contentMode = .scaleAspectFit
+        userImageView.layer.masksToBounds = true
+        userImageView.layer.cornerRadius = 100
         userImageView.translatesAutoresizingMaskIntoConstraints = false
         
         return userImageView
     }()
     
-    var userNameView = {
-        let userName = UILabel()
-        
-        userName.textColor = .white
-        userName.font = UIFont.systemFont(ofSize: 16)
-        userName.textAlignment = .center
-        userName.translatesAutoresizingMaskIntoConstraints = false
-        
-        return userName
-    }()
+//    var tableView: UITableView = {
+//        let tableView = UITableView(frame: .zero, style: .grouped)
+//        tableView.register(UITableViewCell.self, forCellReuseIdentifier: "cell")
+//        tableView.translatesAutoresizingMaskIntoConstraints = false
+//        
+//        return tableView
+//    }()
     
     func setupUI() {
         backgroundColor = .black
         
         addSubview(userImageView)
-        addSubview(userNameView)
+        //addSubview(tableView)
         
-        setUsernameConstraints()
         setUserImageViewConstraints()
+        //setTableViewConstraints()
     }
     
 // MARK: - CONSTRAINTS
@@ -54,18 +53,18 @@ final class UserInfoView: UIView {
     private func setUserImageViewConstraints() {
         NSLayoutConstraint.activate([
             userImageView.centerXAnchor.constraint(equalTo: centerXAnchor),
-            centerYAnchor.constraint(equalTo: userImageView.centerYAnchor, constant: 100),
+            userImageView.topAnchor.constraint(equalTo: topAnchor, constant: 100),
             userImageView.widthAnchor.constraint(equalToConstant: 200),
             userImageView.heightAnchor.constraint(equalToConstant: 200),
         ])
     }
     
-    private func setUsernameConstraints() {
-        NSLayoutConstraint.activate([
-            userNameView.centerXAnchor.constraint(equalTo: centerXAnchor),
-            userNameView.centerYAnchor.constraint(equalTo: centerYAnchor, constant: 100),
-            userNameView.widthAnchor.constraint(equalToConstant: 200),
-            userNameView.heightAnchor.constraint(equalToConstant: 200),
-        ])
-    }
+//    private func setTableViewConstraints() {
+//        NSLayoutConstraint.activate([
+//            tableView.centerXAnchor.constraint(equalTo: centerXAnchor),
+//            tableView.bottomAnchor.constraint(equalTo: bottomAnchor),
+//            tableView.widthAnchor.constraint(equalToConstant: 400),
+//            tableView.heightAnchor.constraint(equalToConstant: 500),
+//        ])
+//    }
 }

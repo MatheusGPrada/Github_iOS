@@ -28,15 +28,14 @@ final class HomeInteractor {
             return
         }
         
-        URLSession.shared.dataTask(with: url) { (data, res, err) in
-
+        URLSession.shared.dataTask(with: url) { [weak self] (data, res, err) in
             guard let data = data else {
                 return
             }
-
+            
             do {
                 let json = try JSONDecoder().decode(UserInfo.self, from: data)
-                let imageURL = URL(string: json.avatar_url)!
+                let imageURL = json.avatar_url
                 
                 URLSession.shared.dataTask(with: imageURL) { (data, response, error) in
                     if let error = error {
@@ -45,14 +44,28 @@ final class HomeInteractor {
                     }
                     let imageData = data!
                     
-                    DispatchQueue.main.async {
-                        self.presenter.navigateToUserInfo(data: json, imageData: imageData)
-                    }
-                    
+                    URLSession.shared.dataTask(with: json.repos_url) { (data, response, error) in
+                        if let error = error {
+                            print("Error: \(error)")
+                            return
+                        }
+                        do {
+                            let repos = data!
+                            let userRepos = try JSONDecoder().decode([Repos].self, from: repos)
+                            
+                            DispatchQueue.main.async {
+                                self?.presenter.navigateToUserInfo(data: json, imageData: imageData, repos: userRepos)
+                            }
+                        } catch {
+                            DispatchQueue.main.async {
+                                self?.presenter.showUserNotFoundAlert()
+                            }
+                        }
+                    }.resume()
                 }.resume()
             } catch {
                 DispatchQueue.main.async {
-                    self.presenter.showUserNotFoundAlert()
+                    self?.presenter.showUserNotFoundAlert()
                 }
             }
 

@@ -10,7 +10,7 @@ import Foundation
 protocol HomePresenterProtocol {
     func showEmptyUserAlert()
     func showUserNotFoundAlert()
-    func navigateToUserInfo(data: UserInfo, imageData: Data)
+    func navigateToUserInfo(data: UserInfo, imageData: Data, repos: [Repos])
 }
 
 final class HomePresenter {
@@ -38,7 +38,7 @@ extension HomePresenter: HomePresenterProtocol {
         view?.showErrorAlert(title: AlertProps.UserNotFound.title, description: AlertProps.UserNotFound.description)
     }
     
-    func navigateToUserInfo(data: UserInfo, imageData: Data) {
-        view?.showViewController(viewController: UserInfoFactory.build(userInfo: data, imageData: imageData))
+    func navigateToUserInfo(data: UserInfo, imageData: Data, repos: [Repos]) {
+        view?.showViewController(viewController: UserInfoFactory.build(userInfo: data, imageData: imageData, repos: repos))
     }
 }

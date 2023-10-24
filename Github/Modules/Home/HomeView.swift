@@ -24,6 +24,7 @@ final class HomeView: UIView {
         usernameTextField.backgroundColor = .white
         usernameTextField.placeholder = "Nome de usuário"
         usernameTextField.borderStyle = .roundedRect
+        usernameTextField.text = "MatheusGPrada"
         usernameTextField.translatesAutoresizingMaskIntoConstraints = false
         
         return usernameTextField
