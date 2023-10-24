@@ -25,6 +25,8 @@ final class UserInfoViewController: UIViewController {
         self.repos = repos
         self.imageData = imageData
         
+        print("Repos: \(repos[0])")
+        
         super.init(nibName: nil, bundle: nil)
     }
     
@@ -41,6 +43,9 @@ final class UserInfoViewController: UIViewController {
         
         //configureModels()
         
+        rootView.repositorieCardView.userRepositoriesName.text = repos[0].name
+        rootView.repositorieCardView.userRepositoriesLanguage.text = repos[0].language
+        rootView.repositorieCardView.userRepositoriesDescription.text = repos[0].description
         rootView.userImageView.image = UIImage(data: imageData)
         
         //rootView.tableView.dataSource = self
