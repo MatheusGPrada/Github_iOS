@@ -52,7 +52,6 @@ final class RepositorieCardView: UIView {
     var userRespositoriesView = {
         let view = UIView()
         
-        view.backgroundColor = .white
         view.layer.cornerRadius = 20
         
         view.translatesAutoresizingMaskIntoConstraints = false

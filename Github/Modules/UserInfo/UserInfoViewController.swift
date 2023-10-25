@@ -15,6 +15,7 @@ final class UserInfoViewController: UIViewController {
     var userInfo: UserInfo
     var imageData: Data
     var repos: [Repos]
+    
     lazy var rootView = UserInfoView()
     
     //private var sections = [Section]()
@@ -24,8 +25,6 @@ final class UserInfoViewController: UIViewController {
         self.userInfo = userInfo
         self.repos = repos
         self.imageData = imageData
-        
-        print("Repos: \(repos[0])")
         
         super.init(nibName: nil, bundle: nil)
     }
@@ -41,15 +40,55 @@ final class UserInfoViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        //configureModels()
+        showCardsOnList()
         
-        rootView.repositorieCardView.userRepositoriesName.text = repos[0].name
-        rootView.repositorieCardView.userRepositoriesLanguage.text = repos[0].language
-        rootView.repositorieCardView.userRepositoriesDescription.text = repos[0].description
         rootView.userImageView.image = UIImage(data: imageData)
+        
+        //configureModels()
         
         //rootView.tableView.dataSource = self
         //rootView.tableView.delegate = self
+    }
+    
+    private func showCardsOnList() {
+        var counter = 0
+        
+        for repo in repos {
+            let repositorieCardView = RepositorieCardView()
+            
+            rootView.repositoriesListContent.addSubview(repositorieCardView)
+            
+            repositorieCardView.userRespositoriesView.backgroundColor = defineCardColor(language: repo.language ?? "")
+            repositorieCardView.userRepositoriesName.text = repo.name
+            repositorieCardView.userRepositoriesLanguage.text = repo.language
+            repositorieCardView.userRepositoriesDescription.text = repo.description
+            
+            setUserRespositoriesConstraints(repositorieCardView: repositorieCardView, element: counter)
+            counter += 1
+        }
+    }
+    
+    private func defineCardColor(language: String) ->UIColor {
+        var color: UIColor
+        
+        switch language {
+        case "Python":
+            color = .systemBlue
+        case "JavaScript":
+            color = .systemYellow
+        case "Swift":
+            color = .systemOrange
+        case "Java":
+            color = .systemRed
+        case "TypeScript":
+            color = .systemYellow
+        case "C++":
+            color = .systemPurple
+        default:
+            color = .white
+        }
+        
+        return color
     }
     
 //    private func configureModels() {
@@ -62,6 +101,32 @@ final class UserInfoViewController: UIViewController {
 //            Option(title: "Seguindo " + String(userInfo.following)),
 //        ]))
 //    }
+    
+    private func setUserRespositoriesConstraints(repositorieCardView: RepositorieCardView, element: Int) {
+        
+        NSLayoutConstraint.activate([
+            repositorieCardView.userRespositoriesView.centerXAnchor.constraint(equalTo: rootView.repositoriesList.centerXAnchor),
+            repositorieCardView.userRespositoriesView.topAnchor.constraint(equalTo: rootView.repositoriesList.topAnchor, constant: element == 0 ? 0 : CGFloat(180 * element)),
+            repositorieCardView.userRespositoriesView.widthAnchor.constraint(equalToConstant: 350),
+            repositorieCardView.userRespositoriesView.heightAnchor.constraint(equalToConstant: 150),
+        ])
+
+        NSLayoutConstraint.activate([
+            repositorieCardView.userRepositoriesName.leftAnchor.constraint(equalTo: repositorieCardView.userRespositoriesView.leftAnchor, constant: 20),
+            repositorieCardView.userRepositoriesName.topAnchor.constraint(equalTo: repositorieCardView.userRespositoriesView.topAnchor, constant: 20),
+        ])
+        
+        NSLayoutConstraint.activate([
+            repositorieCardView.userRepositoriesDescription.leftAnchor.constraint(equalTo: repositorieCardView.userRespositoriesView.leftAnchor, constant: 20),
+            repositorieCardView.userRepositoriesDescription.topAnchor.constraint(equalTo: repositorieCardView.userRespositoriesView.topAnchor, constant: 60),
+            repositorieCardView.userRepositoriesDescription.widthAnchor.constraint(equalToConstant: 250),
+        ])
+        
+        NSLayoutConstraint.activate([
+            repositorieCardView.userRespositoriesView.rightAnchor.constraint(equalTo: repositorieCardView.userRepositoriesLanguage.rightAnchor, constant: 20),
+            repositorieCardView.userRepositoriesLanguage.topAnchor.constraint(equalTo: repositorieCardView.userRespositoriesView.topAnchor, constant: 20),
+        ])
+    }
     
     // MARK: - TableView
     

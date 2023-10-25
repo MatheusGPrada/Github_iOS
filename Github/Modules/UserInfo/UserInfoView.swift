@@ -9,8 +9,6 @@ import UIKit
 
 final class UserInfoView: UIView {
     
-    var repositorieCardView = RepositorieCardView()
-    
     override init(frame: CGRect) {
         super.init(frame: frame)
         
@@ -32,6 +30,24 @@ final class UserInfoView: UIView {
         return userImageView
     }()
     
+    var repositoriesListContent = {
+        let view = UIView()
+        view.translatesAutoresizingMaskIntoConstraints = false
+        
+        return view
+    }()
+    
+    var repositoriesList = {
+        let list = UIScrollView()
+        list.showsVerticalScrollIndicator = true
+        list.isDirectionalLockEnabled = true
+        list.showsHorizontalScrollIndicator = false
+        //TO DO - Hide gray bar on top
+        list.translatesAutoresizingMaskIntoConstraints = false
+        
+        return list
+    }()
+    
 //    var tableView: UITableView = {
 //        let tableView = UITableView(frame: .zero, style: .grouped)
 //        tableView.register(UITableViewCell.self, forCellReuseIdentifier: "cell")
@@ -43,48 +59,44 @@ final class UserInfoView: UIView {
     func setupUI() {
         backgroundColor = .black
         
-        addSubview(repositorieCardView)
+        repositoriesList.addSubview(repositoriesListContent)
+        addSubview(repositoriesList)
         addSubview(userImageView)
         //addSubview(tableView)
         
-        setUserImageViewConstraints()
-        setUserRespositoriesConstraints()
+        setConstraints()
+        //setUserRespositoriesConstraints()
         //setTableViewConstraints()
     }
     
 // MARK: - CONSTRAINTS
     
-    private func setUserImageViewConstraints() {
+    private func setConstraints() {
         NSLayoutConstraint.activate([
             userImageView.centerXAnchor.constraint(equalTo: centerXAnchor),
             userImageView.topAnchor.constraint(equalTo: topAnchor, constant: 100),
             userImageView.widthAnchor.constraint(equalToConstant: 200),
             userImageView.heightAnchor.constraint(equalToConstant: 200),
         ])
-    }
-    
-    private func setUserRespositoriesConstraints() {
+        
         NSLayoutConstraint.activate([
-            repositorieCardView.userRespositoriesView.centerXAnchor.constraint(equalTo: centerXAnchor),
-            repositorieCardView.userRespositoriesView.centerYAnchor.constraint(equalTo: centerYAnchor),
-            repositorieCardView.userRespositoriesView.widthAnchor.constraint(equalToConstant: 350),
-            repositorieCardView.userRespositoriesView.heightAnchor.constraint(equalToConstant: 150),
+            repositoriesList.centerXAnchor.constraint(equalTo: centerXAnchor),
+            centerYAnchor.constraint(equalTo: repositoriesList.topAnchor, constant: 100),
+            repositoriesList.bottomAnchor.constraint(equalTo: safeAreaLayoutGuide.bottomAnchor),
+            repositoriesList.leftAnchor.constraint(equalTo: leftAnchor),
+            repositoriesList.rightAnchor.constraint(equalTo: rightAnchor),
+            repositoriesList.heightAnchor.constraint(equalToConstant: 1800),
+            // TO DO - ADD AUTO HEIGHT AND WARNING
         ])
         
         NSLayoutConstraint.activate([
-            repositorieCardView.userRepositoriesName.leftAnchor.constraint(equalTo: repositorieCardView.userRespositoriesView.leftAnchor, constant: 20),
-            repositorieCardView.userRepositoriesName.topAnchor.constraint(equalTo: repositorieCardView.userRespositoriesView.topAnchor, constant: 20),
-        ])
-        
-        NSLayoutConstraint.activate([
-            repositorieCardView.userRepositoriesDescription.leftAnchor.constraint(equalTo: repositorieCardView.userRespositoriesView.leftAnchor, constant: 20),
-            repositorieCardView.userRepositoriesDescription.topAnchor.constraint(equalTo: repositorieCardView.userRespositoriesView.topAnchor, constant: 60),
-            repositorieCardView.userRepositoriesDescription.widthAnchor.constraint(equalToConstant: 250),
-        ])
-        
-        NSLayoutConstraint.activate([
-            repositorieCardView.userRespositoriesView.rightAnchor.constraint(equalTo: repositorieCardView.userRepositoriesLanguage.rightAnchor, constant: 20),
-            repositorieCardView.userRepositoriesLanguage.topAnchor.constraint(equalTo: repositorieCardView.userRespositoriesView.topAnchor, constant: 20),
+            repositoriesListContent.topAnchor.constraint(equalTo: repositoriesList.topAnchor),
+            repositoriesListContent.bottomAnchor.constraint(equalTo: repositoriesList.bottomAnchor),
+            repositoriesListContent.leftAnchor.constraint(equalTo: repositoriesList.leftAnchor),
+            repositoriesListContent.rightAnchor.constraint(equalTo: repositoriesList.rightAnchor),
+            repositoriesListContent.centerXAnchor.constraint(equalTo: repositoriesList.centerXAnchor),
+            repositoriesListContent.heightAnchor.constraint(equalToConstant: 1800),
+            // TO DO - ADD AUTO HEIGHT AND WARNING
         ])
     }
     
