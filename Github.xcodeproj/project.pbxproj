@@ -23,7 +23,6 @@
 		2FB95FB72AD87CEC00DF96DD /* GithubTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2FB95FB62AD87CEC00DF96DD /* GithubTests.swift */; };
 		2FB95FC12AD87CEC00DF96DD /* GithubUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2FB95FC02AD87CEC00DF96DD /* GithubUITests.swift */; };
 		2FB95FC32AD87CEC00DF96DD /* GithubUITestsLaunchTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2FB95FC22AD87CEC00DF96DD /* GithubUITestsLaunchTests.swift */; };
-		2FB95FD12AD8888200DF96DD /* Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2FB95FD02AD8888200DF96DD /* Extensions.swift */; };
 		2FB95FD62AD990DC00DF96DD /* HomePresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2FB95FD52AD990DC00DF96DD /* HomePresenter.swift */; };
 		2FB95FD82AD990E600DF96DD /* HomeInteractor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2FB95FD72AD990E600DF96DD /* HomeInteractor.swift */; };
 		2FB95FDD2AD9B6C500DF96DD /* UserInfo.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2FB95FDC2AD9B6C500DF96DD /* UserInfo.swift */; };
@@ -68,7 +67,6 @@
 		2FB95FBC2AD87CEC00DF96DD /* GithubUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = GithubUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		2FB95FC02AD87CEC00DF96DD /* GithubUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GithubUITests.swift; sourceTree = "<group>"; };
 		2FB95FC22AD87CEC00DF96DD /* GithubUITestsLaunchTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GithubUITestsLaunchTests.swift; sourceTree = "<group>"; };
-		2FB95FD02AD8888200DF96DD /* Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Extensions.swift; sourceTree = "<group>"; };
 		2FB95FD52AD990DC00DF96DD /* HomePresenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomePresenter.swift; sourceTree = "<group>"; };
 		2FB95FD72AD990E600DF96DD /* HomeInteractor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeInteractor.swift; sourceTree = "<group>"; };
 		2FB95FDC2AD9B6C500DF96DD /* UserInfo.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserInfo.swift; sourceTree = "<group>"; };
@@ -170,7 +168,6 @@
 				2FB95FA82AD87CEC00DF96DD /* Assets.xcassets */,
 				2FB95FA12AD87CEA00DF96DD /* SceneDelegate.swift */,
 				2FB95F9F2AD87CEA00DF96DD /* AppDelegate.swift */,
-				2FB95FD02AD8888200DF96DD /* Extensions.swift */,
 			);
 			path = Resources;
 			sourceTree = "<group>";
@@ -364,7 +361,6 @@
 				2F67C6582ADF254F005A60AE /* UserInfoView.swift in Sources */,
 				2F67C6522ADC4E3C005A60AE /* UserInfoFactory.swift in Sources */,
 				2F67C6612AE7EF77005A60AE /* RepositorieCardView.swift in Sources */,
-				2FB95FD12AD8888200DF96DD /* Extensions.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

@@ -64,6 +64,7 @@ final class RepositorieCardView: UIView {
         NSLayoutConstraint.activate([
             userRepositoriesName.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 20),
             userRepositoriesName.topAnchor.constraint(equalTo: topAnchor, constant: 20),
+            userRepositoriesName.widthAnchor.constraint(equalToConstant: 200)
         ])
         
         NSLayoutConstraint.activate([
