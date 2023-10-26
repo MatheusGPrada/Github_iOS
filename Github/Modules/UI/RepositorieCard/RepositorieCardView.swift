@@ -49,23 +49,32 @@ final class RepositorieCardView: UIView {
         return repositoriesLanguage
     }()
     
-    var userRespositoriesView = {
-        let view = UIView()
-        
-        view.layer.cornerRadius = 20
-        
-        view.translatesAutoresizingMaskIntoConstraints = false
-        
-        return view
-    }()
-    
     func setupUI() {
-        backgroundColor = .black
+        layer.cornerRadius = 20
+        translatesAutoresizingMaskIntoConstraints = false
         
-        userRespositoriesView.addSubview(userRepositoriesLanguage)
-        userRespositoriesView.addSubview(userRepositoriesDescription)
-        userRespositoriesView.addSubview(userRepositoriesName)
+        addSubview(userRepositoriesLanguage)
+        addSubview(userRepositoriesDescription)
+        addSubview(userRepositoriesName)
         
-        addSubview(userRespositoriesView)
+        setConstraints()
+    }
+    
+    func setConstraints() {
+        NSLayoutConstraint.activate([
+            userRepositoriesName.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 20),
+            userRepositoriesName.topAnchor.constraint(equalTo: topAnchor, constant: 20),
+        ])
+        
+        NSLayoutConstraint.activate([
+            userRepositoriesDescription.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 20),
+            userRepositoriesDescription.topAnchor.constraint(equalTo: topAnchor, constant: 60),
+            userRepositoriesDescription.widthAnchor.constraint(equalToConstant: 250),
+        ])
+        
+        NSLayoutConstraint.activate([
+            trailingAnchor.constraint(equalTo: userRepositoriesLanguage.trailingAnchor, constant: 20),
+            userRepositoriesLanguage.topAnchor.constraint(equalTo: topAnchor, constant: 20),
+        ])
     }
 }

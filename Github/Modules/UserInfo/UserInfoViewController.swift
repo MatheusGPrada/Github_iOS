@@ -42,6 +42,8 @@ final class UserInfoViewController: UIViewController {
         
         showCardsOnList()
         
+        print("userInfo: \(userInfo)")
+        rootView.userArrow.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(flipCard)))
         rootView.userImageView.image = UIImage(data: imageData)
         
         //configureModels()
@@ -50,20 +52,43 @@ final class UserInfoViewController: UIViewController {
         //rootView.tableView.delegate = self
     }
     
+    @objc func flipCard() {
+        let isUserImageCard = !rootView.userImageView.isHidden
+        
+        UIView.transition(with: rootView.userCard, duration: 1, options: .transitionFlipFromRight, animations: nil, completion: nil)
+        if(isUserImageCard){
+            rootView.userImageView.isHidden = true
+            rootView.userInfo.isHidden = false
+        } else {
+            rootView.userImageView.isHidden = false
+            rootView.userInfo.isHidden = true
+        }
+    }
+    
     private func showCardsOnList() {
         var counter = 0
+        var isLastItem: Bool = false
+        var cards: [RepositorieCardView] = []
         
         for repo in repos {
+            
             let repositorieCardView = RepositorieCardView()
+            isLastItem = (repos.count - 1) == counter
             
             rootView.repositoriesListContent.addSubview(repositorieCardView)
-            
-            repositorieCardView.userRespositoriesView.backgroundColor = defineCardColor(language: repo.language ?? "")
+            repositorieCardView.backgroundColor = defineCardColor(language: repo.language ?? "")
             repositorieCardView.userRepositoriesName.text = repo.name
             repositorieCardView.userRepositoriesLanguage.text = repo.language
             repositorieCardView.userRepositoriesDescription.text = repo.description
             
-            setUserRespositoriesConstraints(repositorieCardView: repositorieCardView, element: counter)
+            cards.append(repositorieCardView)
+            
+            if(counter == 0){
+                setUserRespositoriesConstraints(currentCard: cards[counter], isLastItem: isLastItem)
+            } else {
+                setUserRespositoriesWithPreviousConstraints(previosCard: cards[counter - 1], currentCard: cards[counter], isLastItem: isLastItem, howMuchElements: counter + 1)
+            }
+            
             counter += 1
         }
     }
@@ -91,6 +116,53 @@ final class UserInfoViewController: UIViewController {
         return color
     }
     
+    //MARK: - LIST CONSTRAINTS
+    
+    private func setUserRespositoriesConstraints(currentCard: RepositorieCardView, isLastItem: Bool) {
+        // PRIMEIRO E ULTIMO CARD
+        if(isLastItem){
+            NSLayoutConstraint.activate([
+                currentCard.topAnchor.constraint(equalTo: rootView.repositoriesListContent.topAnchor),
+                currentCard.leadingAnchor.constraint(equalTo: rootView.repositoriesListContent.leadingAnchor, constant: 20),
+                rootView.repositoriesListContent.trailingAnchor.constraint(equalTo: currentCard.trailingAnchor, constant: 20),
+                currentCard.heightAnchor.constraint(equalToConstant: 150),
+                rootView.repositoriesListContent.heightAnchor.constraint(equalToConstant: 150),
+            ])
+            return
+        }
+        
+        // PRIMEIRO CARD
+        NSLayoutConstraint.activate([
+            currentCard.topAnchor.constraint(equalTo: rootView.repositoriesListContent.topAnchor),
+            currentCard.leadingAnchor.constraint(equalTo: rootView.repositoriesListContent.leadingAnchor, constant: 20),
+            rootView.repositoriesListContent.trailingAnchor.constraint(equalTo: currentCard.trailingAnchor, constant: 20),
+            currentCard.heightAnchor.constraint(equalToConstant: 150),
+        ])
+    }
+    
+    private func setUserRespositoriesWithPreviousConstraints(previosCard: RepositorieCardView, currentCard: RepositorieCardView, isLastItem: Bool, howMuchElements: Int) {
+        
+        // ULTIMO CARD
+        if(isLastItem){
+            NSLayoutConstraint.activate([
+                currentCard.topAnchor.constraint(equalTo: previosCard.bottomAnchor, constant: 20),
+                currentCard.leadingAnchor.constraint(equalTo: rootView.repositoriesListContent.leadingAnchor, constant: 20),
+                rootView.repositoriesListContent.trailingAnchor.constraint(equalTo: currentCard.trailingAnchor, constant: 20),
+                currentCard.heightAnchor.constraint(equalToConstant: 150),
+                rootView.repositoriesListContent.heightAnchor.constraint(equalToConstant: CGFloat((howMuchElements * 20) + (howMuchElements * 150))),
+            ])
+            return
+        }
+        
+        // CARD DO MEIO
+        NSLayoutConstraint.activate([
+            currentCard.topAnchor.constraint(equalTo: previosCard.bottomAnchor, constant: 20),
+            currentCard.leadingAnchor.constraint(equalTo: rootView.repositoriesListContent.leadingAnchor, constant: 20),
+            rootView.repositoriesListContent.trailingAnchor.constraint(equalTo: currentCard.trailingAnchor, constant: 20),
+            currentCard.heightAnchor.constraint(equalToConstant: 150),
+        ])
+    }
+    
 //    private func configureModels() {
 //        sections.append(Section(title: "Informações Pessoais", options: [
 //            Option(title: userInfo.name),
@@ -102,31 +174,7 @@ final class UserInfoViewController: UIViewController {
 //        ]))
 //    }
     
-    private func setUserRespositoriesConstraints(repositorieCardView: RepositorieCardView, element: Int) {
-        
-        NSLayoutConstraint.activate([
-            repositorieCardView.userRespositoriesView.centerXAnchor.constraint(equalTo: rootView.repositoriesList.centerXAnchor),
-            repositorieCardView.userRespositoriesView.topAnchor.constraint(equalTo: rootView.repositoriesList.topAnchor, constant: element == 0 ? 0 : CGFloat(180 * element)),
-            repositorieCardView.userRespositoriesView.widthAnchor.constraint(equalToConstant: 350),
-            repositorieCardView.userRespositoriesView.heightAnchor.constraint(equalToConstant: 150),
-        ])
-
-        NSLayoutConstraint.activate([
-            repositorieCardView.userRepositoriesName.leftAnchor.constraint(equalTo: repositorieCardView.userRespositoriesView.leftAnchor, constant: 20),
-            repositorieCardView.userRepositoriesName.topAnchor.constraint(equalTo: repositorieCardView.userRespositoriesView.topAnchor, constant: 20),
-        ])
-        
-        NSLayoutConstraint.activate([
-            repositorieCardView.userRepositoriesDescription.leftAnchor.constraint(equalTo: repositorieCardView.userRespositoriesView.leftAnchor, constant: 20),
-            repositorieCardView.userRepositoriesDescription.topAnchor.constraint(equalTo: repositorieCardView.userRespositoriesView.topAnchor, constant: 60),
-            repositorieCardView.userRepositoriesDescription.widthAnchor.constraint(equalToConstant: 250),
-        ])
-        
-        NSLayoutConstraint.activate([
-            repositorieCardView.userRespositoriesView.rightAnchor.constraint(equalTo: repositorieCardView.userRepositoriesLanguage.rightAnchor, constant: 20),
-            repositorieCardView.userRepositoriesLanguage.topAnchor.constraint(equalTo: repositorieCardView.userRespositoriesView.topAnchor, constant: 20),
-        ])
-    }
+    
     
     // MARK: - TableView
     

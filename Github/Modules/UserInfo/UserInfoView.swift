@@ -19,15 +19,46 @@ final class UserInfoView: UIView {
         fatalError("init(coder:) has not been implemented")
     }
     
+    var userCard = {
+        let userView = UIView()
+        
+        userView.layer.cornerRadius = 20
+        userView.backgroundColor = .white
+        userView.translatesAutoresizingMaskIntoConstraints = false
+        
+        return userView
+    }()
+    
     var userImageView = {
         let userImageView = UIImageView()
         
         userImageView.contentMode = .scaleAspectFit
         userImageView.layer.masksToBounds = true
-        userImageView.layer.cornerRadius = 100
         userImageView.translatesAutoresizingMaskIntoConstraints = false
         
         return userImageView
+    }()
+    
+    var userArrow = {
+        let userArrow = UIImageView(image: UIImage(systemName: "arrow.forward"))
+        
+        userArrow.tintColor = .black
+        userArrow.contentMode = .scaleAspectFit
+        userArrow.isUserInteractionEnabled = true
+        userArrow.translatesAutoresizingMaskIntoConstraints = false
+        
+        return userArrow
+    }()
+    
+    var userInfo = {
+        let repositoriesName = UILabel()
+        
+        repositoriesName.font = UIFont.systemFont(ofSize: 20)
+        repositoriesName.text = "Matheus"
+        repositoriesName.isHidden = true
+        repositoriesName.translatesAutoresizingMaskIntoConstraints = false
+        
+        return repositoriesName
     }()
     
     var repositoriesListContent = {
@@ -60,8 +91,13 @@ final class UserInfoView: UIView {
         backgroundColor = .black
         
         repositoriesList.addSubview(repositoriesListContent)
+        
+        userCard.addSubview(userArrow)
+        userCard.addSubview(userImageView)
+        userCard.addSubview(userInfo)
+        
         addSubview(repositoriesList)
-        addSubview(userImageView)
+        addSubview(userCard)
         //addSubview(tableView)
         
         setConstraints()
@@ -69,34 +105,55 @@ final class UserInfoView: UIView {
         //setTableViewConstraints()
     }
     
-// MARK: - CONSTRAINTS
-    
     private func setConstraints() {
+        // MARK: - USER CARD
+        
         NSLayoutConstraint.activate([
-            userImageView.centerXAnchor.constraint(equalTo: centerXAnchor),
-            userImageView.topAnchor.constraint(equalTo: topAnchor, constant: 100),
-            userImageView.widthAnchor.constraint(equalToConstant: 200),
-            userImageView.heightAnchor.constraint(equalToConstant: 200),
+            userCard.centerXAnchor.constraint(equalTo: centerXAnchor),
+            centerYAnchor.constraint(equalTo: userCard.centerYAnchor, constant: 200),
+            userCard.widthAnchor.constraint(equalToConstant: 350),
+            userCard.heightAnchor.constraint(equalToConstant: 250),
         ])
         
         NSLayoutConstraint.activate([
+            userImageView.centerYAnchor.constraint(equalTo: userCard.centerYAnchor),
+            userImageView.topAnchor.constraint(equalTo: userCard.topAnchor, constant: 10),
+            userImageView.leadingAnchor.constraint(equalTo: userCard.leadingAnchor, constant: 10),
+            userImageView.widthAnchor.constraint(equalToConstant: 180),
+            userImageView.heightAnchor.constraint(equalToConstant: 180),
+        ])
+        
+        NSLayoutConstraint.activate([
+            userCard.trailingAnchor.constraint(equalTo: userArrow.trailingAnchor, constant: 20),
+            userCard.bottomAnchor.constraint(equalTo: userArrow.bottomAnchor, constant: 20),
+            userArrow.widthAnchor.constraint(equalToConstant: 40),
+            userArrow.heightAnchor.constraint(equalToConstant: 40),
+        ])
+        
+        NSLayoutConstraint.activate([
+            userInfo.centerXAnchor.constraint(equalTo: userCard.centerXAnchor),
+            userInfo.centerYAnchor.constraint(equalTo: userCard.centerYAnchor),
+            userInfo.leadingAnchor.constraint(equalTo: userCard.leadingAnchor),
+            userInfo.widthAnchor.constraint(equalToConstant: 40),
+            userInfo.heightAnchor.constraint(equalToConstant: 40),
+        ])
+        
+        // MARK: - LIST
+        
+        NSLayoutConstraint.activate([
             repositoriesList.centerXAnchor.constraint(equalTo: centerXAnchor),
-            centerYAnchor.constraint(equalTo: repositoriesList.topAnchor, constant: 100),
+            centerYAnchor.constraint(equalTo: repositoriesList.topAnchor, constant: 50),
             repositoriesList.bottomAnchor.constraint(equalTo: safeAreaLayoutGuide.bottomAnchor),
-            repositoriesList.leftAnchor.constraint(equalTo: leftAnchor),
-            repositoriesList.rightAnchor.constraint(equalTo: rightAnchor),
-            repositoriesList.heightAnchor.constraint(equalToConstant: 1800),
-            // TO DO - ADD AUTO HEIGHT AND WARNING
+            repositoriesList.leadingAnchor.constraint(equalTo: leadingAnchor),
+            repositoriesList.trailingAnchor.constraint(equalTo: trailingAnchor),
         ])
         
         NSLayoutConstraint.activate([
             repositoriesListContent.topAnchor.constraint(equalTo: repositoriesList.topAnchor),
             repositoriesListContent.bottomAnchor.constraint(equalTo: repositoriesList.bottomAnchor),
-            repositoriesListContent.leftAnchor.constraint(equalTo: repositoriesList.leftAnchor),
-            repositoriesListContent.rightAnchor.constraint(equalTo: repositoriesList.rightAnchor),
+            repositoriesListContent.leadingAnchor.constraint(equalTo: repositoriesList.leadingAnchor),
+            repositoriesListContent.trailingAnchor.constraint(equalTo: repositoriesList.trailingAnchor),
             repositoriesListContent.centerXAnchor.constraint(equalTo: repositoriesList.centerXAnchor),
-            repositoriesListContent.heightAnchor.constraint(equalToConstant: 1800),
-            // TO DO - ADD AUTO HEIGHT AND WARNING
         ])
     }
     
