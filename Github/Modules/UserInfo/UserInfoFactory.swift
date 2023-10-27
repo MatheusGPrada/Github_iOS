@@ -9,11 +9,11 @@ import UIKit
 
 struct UserInfoFactory {
     static func build(userInfo: UserInfo, imageData: Data, repos: [Repos]) -> UIViewController {
-        //let presenter = UserInfoPresenter()
-        let interactor = UserInfoInteractor()
+        let presenter = UserInfoPresenter()
+        let interactor = UserInfoInteractor(presenter: presenter)
         let view = UserInfoViewController(interactor: interactor, userInfo: userInfo, imageData: imageData, repos: repos)
 
-        //presenter.view = view
+        presenter.view = view
         return view
     }
 }

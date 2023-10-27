@@ -7,6 +7,11 @@
 
 import UIKit
 
+protocol UserInfoViewControllerProtocol: AnyObject {
+    func showInfoCard()
+    func showUserImageCard()
+}
+
 final class UserInfoViewController: UIViewController {
     // final class UserInfoViewController: UIViewController, UITableViewDelegate, UITableViewDataSource {
     
@@ -43,6 +48,11 @@ final class UserInfoViewController: UIViewController {
         showCardsOnList()
         
         print("userInfo: \(userInfo)")
+        rootView.userName.text = userInfo.login
+        rootView.userBio.text = userInfo.bio
+        rootView.userLocation.text = userInfo.location
+        rootView.userCompany.text = userInfo.company
+        
         rootView.userArrow.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(flipCard)))
         rootView.userImageView.image = UIImage(data: imageData)
         
@@ -54,15 +64,9 @@ final class UserInfoViewController: UIViewController {
     
     @objc func flipCard() {
         let isUserImageCard = !rootView.userImageView.isHidden
-        
         UIView.transition(with: rootView.userCard, duration: 1, options: .transitionFlipFromRight, animations: nil, completion: nil)
-        if(isUserImageCard){
-            rootView.userImageView.isHidden = true
-            rootView.userInfo.isHidden = false
-        } else {
-            rootView.userImageView.isHidden = false
-            rootView.userInfo.isHidden = true
-        }
+        interactor.flipCard(isUserImageCard: isUserImageCard)
+        
     }
     
     private func showCardsOnList() {
@@ -162,7 +166,28 @@ final class UserInfoViewController: UIViewController {
             currentCard.heightAnchor.constraint(equalToConstant: 150),
         ])
     }
+}
+
+extension UserInfoViewController: UserInfoViewControllerProtocol {
+    func showInfoCard() {
+        rootView.userImageView.isHidden = true
+        
+        rootView.userCompany.isHidden = false
+        rootView.userLocation.isHidden = false
+        rootView.userBio.isHidden = false
+        rootView.userName.isHidden = false
+    }
     
+    func showUserImageCard() {
+        rootView.userImageView.isHidden = false
+        
+        rootView.userCompany.isHidden = true
+        rootView.userLocation.isHidden = true
+        rootView.userBio.isHidden = true
+        rootView.userName.isHidden = true
+    }
+}
+
 //    private func configureModels() {
 //        sections.append(Section(title: "Informações Pessoais", options: [
 //            Option(title: userInfo.name),
@@ -181,18 +206,18 @@ final class UserInfoViewController: UIViewController {
 //    func numberOfSections(in tableView: UITableView) -> Int {
 //        return sections.count
 //    }
-//    
+//
 //    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
 //        return sections[section].options.count
 //    }
-//    
+//
 //    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
 //        let model = sections[indexPath.section].options[indexPath.row]
 //        let cell = tableView.dequeueReusableCell(withIdentifier: "cell", for: indexPath)
 //        cell.textLabel?.text = model.title
 //        return cell
 //    }
-//    
+//
 //    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
 //        tableView.deselectRow(at: indexPath, animated: true)
 //        let model = sections[indexPath.section].options[indexPath.row]
@@ -200,9 +225,8 @@ final class UserInfoViewController: UIViewController {
 //            model.handler!()
 //        }
 //    }
-//    
+//
 //    func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
 //        let model = sections[section]
 //        return model.title
 //    }
-}

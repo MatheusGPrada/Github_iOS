@@ -8,19 +8,24 @@
 import Foundation
 
 protocol UserInfoInteractorProtocol {
-    
+    func flipCard(isUserImageCard: Bool)
 }
 
 class UserInfoInteractor {
     
-    // let presenter: HomePresenterProtocol
+    let presenter: UserInfoPresenterProtocol
     
-    //    init(presenter: HomePresenterProtocol) {
-    //        self.presenter = presenter
-    //    }
-    
+    init(presenter: UserInfoPresenterProtocol) {
+        self.presenter = presenter
+    }
 }
 
 extension UserInfoInteractor: UserInfoInteractorProtocol {
-
+    func flipCard(isUserImageCard: Bool) {
+        if(isUserImageCard){
+            presenter.showInfoCard()
+        } else {
+            presenter.showUserImageCard()
+        }
+    }
 }

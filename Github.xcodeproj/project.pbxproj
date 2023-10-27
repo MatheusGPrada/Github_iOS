@@ -15,6 +15,7 @@
 		2F67C65A2AE16D9D005A60AE /* Settings.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2F67C6592AE16D9D005A60AE /* Settings.swift */; };
 		2F67C65C2AE6FC17005A60AE /* Repos.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2F67C65B2AE6FC17005A60AE /* Repos.swift */; };
 		2F67C6612AE7EF77005A60AE /* RepositorieCardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2F67C6602AE7EF77005A60AE /* RepositorieCardView.swift */; };
+		2F79D0DD2AEB2D0C00D2CE62 /* UserInfoPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2F79D0DC2AEB2D0C00D2CE62 /* UserInfoPresenter.swift */; };
 		2FB95FA02AD87CEA00DF96DD /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2FB95F9F2AD87CEA00DF96DD /* AppDelegate.swift */; };
 		2FB95FA22AD87CEA00DF96DD /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2FB95FA12AD87CEA00DF96DD /* SceneDelegate.swift */; };
 		2FB95FA42AD87CEA00DF96DD /* HomeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2FB95FA32AD87CEA00DF96DD /* HomeViewController.swift */; };
@@ -55,6 +56,7 @@
 		2F67C6592AE16D9D005A60AE /* Settings.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Settings.swift; sourceTree = "<group>"; };
 		2F67C65B2AE6FC17005A60AE /* Repos.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Repos.swift; sourceTree = "<group>"; };
 		2F67C6602AE7EF77005A60AE /* RepositorieCardView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RepositorieCardView.swift; sourceTree = "<group>"; };
+		2F79D0DC2AEB2D0C00D2CE62 /* UserInfoPresenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserInfoPresenter.swift; sourceTree = "<group>"; };
 		2FB95F9C2AD87CEA00DF96DD /* Github.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Github.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		2FB95F9F2AD87CEA00DF96DD /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		2FB95FA12AD87CEA00DF96DD /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -212,6 +214,7 @@
 				2F67C6572ADF254F005A60AE /* UserInfoView.swift */,
 				2FB95FDF2AD9F9E600DF96DD /* UserInfoViewController.swift */,
 				2F67C6532ADD9D7F005A60AE /* UserInfoInteractor.swift */,
+				2F79D0DC2AEB2D0C00D2CE62 /* UserInfoPresenter.swift */,
 			);
 			path = UserInfo;
 			sourceTree = "<group>";
@@ -351,6 +354,7 @@
 				2F67C6542ADD9D7F005A60AE /* UserInfoInteractor.swift in Sources */,
 				2F67C6502ADC3B1F005A60AE /* HomeFactory.swift in Sources */,
 				2FB95FE02AD9F9E700DF96DD /* UserInfoViewController.swift in Sources */,
+				2F79D0DD2AEB2D0C00D2CE62 /* UserInfoPresenter.swift in Sources */,
 				2F67C65A2AE16D9D005A60AE /* Settings.swift in Sources */,
 				2FB95FA02AD87CEA00DF96DD /* AppDelegate.swift in Sources */,
 				2FB95FA22AD87CEA00DF96DD /* SceneDelegate.swift in Sources */,
