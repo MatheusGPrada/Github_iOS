@@ -151,7 +151,6 @@ final class UserInfoView: UIView {
         ])
         
         NSLayoutConstraint.activate([
-            userImageView.centerYAnchor.constraint(equalTo: userCard.centerYAnchor),
             userImageView.centerXAnchor.constraint(equalTo: userCard.centerXAnchor),
             userImageView.topAnchor.constraint(equalTo: userCard.topAnchor, constant: 10),
             userImageView.widthAnchor.constraint(equalToConstant: 180),

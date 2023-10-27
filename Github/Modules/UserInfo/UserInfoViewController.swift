@@ -44,6 +44,7 @@ final class UserInfoViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        self.navigationController?.navigationBar.barTintColor = .black
         
         showCardsOnList()
         
@@ -69,34 +70,6 @@ final class UserInfoViewController: UIViewController {
         
     }
     
-    private func showCardsOnList() {
-        var counter = 0
-        var isLastItem: Bool = false
-        var cards: [RepositorieCardView] = []
-        
-        for repo in repos {
-            
-            let repositorieCardView = RepositorieCardView()
-            isLastItem = (repos.count - 1) == counter
-            
-            rootView.repositoriesListContent.addSubview(repositorieCardView)
-            repositorieCardView.backgroundColor = defineCardColor(language: repo.language ?? "")
-            repositorieCardView.userRepositoriesName.text = repo.name
-            repositorieCardView.userRepositoriesLanguage.text = repo.language
-            repositorieCardView.userRepositoriesDescription.text = repo.description
-            
-            cards.append(repositorieCardView)
-            
-            if(counter == 0){
-                setUserRespositoriesConstraints(currentCard: cards[counter], isLastItem: isLastItem)
-            } else {
-                setUserRespositoriesWithPreviousConstraints(previosCard: cards[counter - 1], currentCard: cards[counter], isLastItem: isLastItem, howMuchElements: counter + 1)
-            }
-            
-            counter += 1
-        }
-    }
-    
     private func defineCardColor(language: String) ->UIColor {
         var color: UIColor
         
@@ -120,53 +93,67 @@ final class UserInfoViewController: UIViewController {
         return color
     }
     
-    //MARK: - LIST CONSTRAINTS
-    
-    private func setUserRespositoriesConstraints(currentCard: RepositorieCardView, isLastItem: Bool) {
-        // PRIMEIRO E ULTIMO CARD
-        if(isLastItem){
-            NSLayoutConstraint.activate([
-                currentCard.topAnchor.constraint(equalTo: rootView.repositoriesListContent.topAnchor),
-                currentCard.leadingAnchor.constraint(equalTo: rootView.repositoriesListContent.leadingAnchor, constant: 20),
-                rootView.repositoriesListContent.trailingAnchor.constraint(equalTo: currentCard.trailingAnchor, constant: 20),
-                currentCard.heightAnchor.constraint(equalToConstant: 150),
-                rootView.repositoriesListContent.heightAnchor.constraint(equalToConstant: 150),
-            ])
+    private func showCardsOnList() {
+        
+        guard repos.isEmpty == false else {
             return
         }
         
-        // PRIMEIRO CARD
-        NSLayoutConstraint.activate([
-            currentCard.topAnchor.constraint(equalTo: rootView.repositoriesListContent.topAnchor),
-            currentCard.leadingAnchor.constraint(equalTo: rootView.repositoriesListContent.leadingAnchor, constant: 20),
-            rootView.repositoriesListContent.trailingAnchor.constraint(equalTo: currentCard.trailingAnchor, constant: 20),
-            currentCard.heightAnchor.constraint(equalToConstant: 150),
-        ])
-    }
-    
-    private func setUserRespositoriesWithPreviousConstraints(previosCard: RepositorieCardView, currentCard: RepositorieCardView, isLastItem: Bool, howMuchElements: Int) {
-        
-        // ULTIMO CARD
-        if(isLastItem){
-            NSLayoutConstraint.activate([
-                currentCard.topAnchor.constraint(equalTo: previosCard.bottomAnchor, constant: 20),
-                currentCard.leadingAnchor.constraint(equalTo: rootView.repositoriesListContent.leadingAnchor, constant: 20),
-                rootView.repositoriesListContent.trailingAnchor.constraint(equalTo: currentCard.trailingAnchor, constant: 20),
-                currentCard.heightAnchor.constraint(equalToConstant: 150),
-                rootView.repositoriesListContent.heightAnchor.constraint(equalToConstant: CGFloat((howMuchElements * 20) + (howMuchElements * 150))),
-            ])
-            return
+        func generateCard(_ repo: Repos) -> RepositorieCardView {
+            let repositorieCardView = RepositorieCardView()
+            
+            rootView.repositoriesListContent.addSubview(repositorieCardView)
+            repositorieCardView.backgroundColor = defineCardColor(language: repo.language ?? "")
+            repositorieCardView.userRepositoriesName.text = repo.name
+            repositorieCardView.userRepositoriesLanguage.text = repo.language
+            repositorieCardView.userRepositoriesDescription.text = repo.description
+            
+            return repositorieCardView
         }
         
-        // CARD DO MEIO
-        NSLayoutConstraint.activate([
-            currentCard.topAnchor.constraint(equalTo: previosCard.bottomAnchor, constant: 20),
-            currentCard.leadingAnchor.constraint(equalTo: rootView.repositoriesListContent.leadingAnchor, constant: 20),
-            rootView.repositoriesListContent.trailingAnchor.constraint(equalTo: currentCard.trailingAnchor, constant: 20),
-            currentCard.heightAnchor.constraint(equalToConstant: 150),
-        ])
+        func configureFirstCard(firstCard: RepositorieCardView) {
+            NSLayoutConstraint.activate([
+                firstCard.topAnchor.constraint(equalTo: rootView.repositoriesListContent.topAnchor),
+                firstCard.leadingAnchor.constraint(equalTo: rootView.repositoriesListContent.leadingAnchor, constant: 20),
+                rootView.repositoriesListContent.trailingAnchor.constraint(equalTo: firstCard.trailingAnchor, constant: 20),
+                firstCard.heightAnchor.constraint(equalToConstant: 150),
+            ])
+        }
+        
+        func configureMiddleCard(middleCard: RepositorieCardView, previousCard: RepositorieCardView) {
+            NSLayoutConstraint.activate([
+                middleCard.topAnchor.constraint(equalTo: previousCard.bottomAnchor, constant: 20),
+                middleCard.leadingAnchor.constraint(equalTo: rootView.repositoriesListContent.leadingAnchor, constant: 20),
+                rootView.repositoriesListContent.trailingAnchor.constraint(equalTo: middleCard.trailingAnchor, constant: 20),
+                middleCard.heightAnchor.constraint(equalToConstant: 150),
+            ])
+        }
+        
+        func configureLastCard(lastCard: RepositorieCardView) {
+            NSLayoutConstraint.activate([
+                lastCard.bottomAnchor.constraint(equalTo: rootView.repositoriesListContent.bottomAnchor),
+            ])
+        }
+        
+        let firstCard = generateCard(repos[0])
+        configureFirstCard(firstCard: firstCard)
+        
+        var previousCard = firstCard
+        
+        for index in 1..<(repos.count - 1) {
+            let card = generateCard(repos[index])
+            configureMiddleCard(middleCard: card, previousCard: previousCard)
+            
+            previousCard = card
+        }
+        
+        let lastIndex = repos.count - 1
+        let lastCard = generateCard(repos[lastIndex])
+        configureLastCard(lastCard: lastCard)
+        configureMiddleCard(middleCard: lastCard, previousCard: previousCard)
+        }
     }
-}
+
 
 extension UserInfoViewController: UserInfoViewControllerProtocol {
     func showInfoCard() {
