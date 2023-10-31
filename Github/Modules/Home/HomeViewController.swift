@@ -7,11 +7,6 @@
 
 import UIKit
 
-protocol HomeViewControllerProtocol: AnyObject {
-    func showErrorAlert(title: String, description: String)
-    func showViewController(viewController: UIViewController)
-}
-
 final class HomeViewController: UIViewController {
     
     let interactor: HomeInteractorProtocol
@@ -42,17 +37,4 @@ final class HomeViewController: UIViewController {
         }
         interactor.validUsername(username: username)
     }
-}
-
-extension HomeViewController: HomeViewControllerProtocol {
-    func showViewController(viewController: UIViewController) {
-        navigationController?.pushViewController(viewController, animated: true)
-    }
-    
-    func showErrorAlert(title: String, description: String){
-        let alertController = UIAlertController(title: title, message: description, preferredStyle: .alert)
-        alertController.addAction(UIAlertAction(title: "OK", style: UIAlertAction.Style.default))
-        present(alertController, animated: true, completion: nil)
-    }
-
 }

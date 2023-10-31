@@ -106,7 +106,6 @@ final class UserInfoView: UIView {
         list.showsVerticalScrollIndicator = true
         list.isDirectionalLockEnabled = true
         list.showsHorizontalScrollIndicator = false
-        //TO DO - Hide gray bar on top
         list.translatesAutoresizingMaskIntoConstraints = false
         
         return list

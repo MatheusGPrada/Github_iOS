@@ -12,8 +12,9 @@ struct HomeFactory {
         let presenter = HomePresenter()
         let interactor = HomeInteractor(presenter: presenter)
         let view = HomeViewController(interactor: interactor)
+        let coordinator = HomeCoordinator(viewController: view)
 
-        presenter.view = view
+        presenter.coordinator = coordinator
         return view
     }
 }

@@ -48,7 +48,6 @@ final class UserInfoViewController: UIViewController {
         
         showCardsOnList()
         
-        print("userInfo: \(userInfo)")
         rootView.userName.text = userInfo.name
         rootView.userBio.text = userInfo.bio
         rootView.userLocation.text = userInfo.location

@@ -15,7 +15,7 @@ protocol HomePresenterProtocol {
 
 final class HomePresenter {
     
-    weak var view: HomeViewControllerProtocol?
+    var coordinator: HomeCoordinator?
     
     enum AlertProps {
         enum EmptyUser {
@@ -31,14 +31,14 @@ final class HomePresenter {
 
 extension HomePresenter: HomePresenterProtocol {
     func showEmptyUserAlert() {
-        view?.showErrorAlert(title: AlertProps.EmptyUser.title, description: AlertProps.EmptyUser.description)
+        coordinator?.showErrorAlert(title: AlertProps.EmptyUser.title, description: AlertProps.EmptyUser.description)
     }
     
     func showUserNotFoundAlert() {
-        view?.showErrorAlert(title: AlertProps.UserNotFound.title, description: AlertProps.UserNotFound.description)
+        coordinator?.showErrorAlert(title: AlertProps.UserNotFound.title, description: AlertProps.UserNotFound.description)
     }
     
     func navigateToUserInfo(data: UserInfo, imageData: Data, repos: [Repos]) {
-        view?.showViewController(viewController: UserInfoFactory.build(userInfo: data, imageData: imageData, repos: repos))
+        coordinator?.showViewController(viewController: UserInfoFactory.build(userInfo: data, imageData: imageData, repos: repos))
     }
 }
