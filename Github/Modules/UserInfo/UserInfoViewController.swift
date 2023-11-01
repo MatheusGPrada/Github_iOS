@@ -45,6 +45,7 @@ final class UserInfoViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         self.navigationController?.navigationBar.barTintColor = .black
+        self.navigationController?.navigationBar.backItem?.backBarButtonItem?.title = "Voltar"
         
         showCardsOnList()
         
@@ -111,27 +112,27 @@ final class UserInfoViewController: UIViewController {
         }
         
         func configureFirstCard(firstCard: RepositorieCardView) {
-            NSLayoutConstraint.activate([
-                firstCard.topAnchor.constraint(equalTo: rootView.repositoriesListContent.topAnchor),
-                firstCard.leadingAnchor.constraint(equalTo: rootView.repositoriesListContent.leadingAnchor, constant: 20),
-                rootView.repositoriesListContent.trailingAnchor.constraint(equalTo: firstCard.trailingAnchor, constant: 20),
-                firstCard.heightAnchor.constraint(equalToConstant: 150),
-            ])
+            firstCard.snp.makeConstraints { (make) -> Void in
+                make.top.equalTo(rootView.repositoriesListContent.snp.top)
+                make.leading.equalTo(rootView.repositoriesListContent.snp.leading).offset(20)
+                make.trailing.equalTo(rootView.repositoriesListContent.snp.trailing).offset(-20)
+                make.height.equalTo(150)
+            }
         }
         
         func configureMiddleCard(middleCard: RepositorieCardView, previousCard: RepositorieCardView) {
-            NSLayoutConstraint.activate([
-                middleCard.topAnchor.constraint(equalTo: previousCard.bottomAnchor, constant: 20),
-                middleCard.leadingAnchor.constraint(equalTo: rootView.repositoriesListContent.leadingAnchor, constant: 20),
-                rootView.repositoriesListContent.trailingAnchor.constraint(equalTo: middleCard.trailingAnchor, constant: 20),
-                middleCard.heightAnchor.constraint(equalToConstant: 150),
-            ])
+            middleCard.snp.makeConstraints { (make) -> Void in
+                make.top.equalTo(previousCard.snp.bottom).offset(20)
+                make.leading.equalTo(rootView.repositoriesListContent.snp.leading).offset(20)
+                make.trailing.equalTo(rootView.repositoriesListContent.snp.trailing).offset(-20)
+                make.height.equalTo(150)
+            }
         }
         
         func configureLastCard(lastCard: RepositorieCardView) {
-            NSLayoutConstraint.activate([
-                lastCard.bottomAnchor.constraint(equalTo: rootView.repositoriesListContent.bottomAnchor),
-            ])
+            lastCard.snp.makeConstraints { (make) -> Void in
+                make.bottom.equalTo(rootView.repositoriesListContent.snp.bottom)
+            }
         }
         
         let firstCard = generateCard(repos[0])

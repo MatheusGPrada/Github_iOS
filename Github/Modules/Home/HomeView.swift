@@ -6,6 +6,7 @@
 //
 
 import UIKit
+import SnapKit
 
 final class HomeView: UIView {
     var gitImageView: UIImageView = {
@@ -46,27 +47,22 @@ final class HomeView: UIView {
         addSubview(gitImageView)
         addSubview(usernameTextField)
         
-        setGitImageConstraints()
-        setUsernameInputConstraints()
+        setConstraints()
     }
     
-    // MARK: - Constraints
-    
-    private func setGitImageConstraints() {
-        NSLayoutConstraint.activate([
-            gitImageView.centerXAnchor.constraint(equalTo: centerXAnchor),
-            centerYAnchor.constraint(equalTo: gitImageView.centerYAnchor, constant: 100),
-            gitImageView.widthAnchor.constraint(equalToConstant: 200),
-            gitImageView.heightAnchor.constraint(equalToConstant: 200),
-        ])
-    }
-    
-    private func setUsernameInputConstraints() {
-        NSLayoutConstraint.activate([
-            usernameTextField.centerXAnchor.constraint(equalTo: centerXAnchor),
-            usernameTextField.centerYAnchor.constraint(equalTo: gitImageView.centerYAnchor, constant: 100),
-            usernameTextField.widthAnchor.constraint(equalToConstant: 200),
-            usernameTextField.heightAnchor.constraint(equalToConstant: 50),
-        ])
+    private func setConstraints() {
+        gitImageView.snp.makeConstraints { (make) -> Void in
+            make.centerX.equalToSuperview()
+            make.centerY.equalToSuperview().offset(-100)
+            make.width.equalTo(200)
+            make.height.equalTo(200)
+        }
+        
+        usernameTextField.snp.makeConstraints { (make) -> Void in
+            make.centerX.equalToSuperview()
+            make.centerY.equalToSuperview()
+            make.width.equalTo(200)
+            make.height.equalTo(50)
+        }
     }
 }

@@ -142,80 +142,71 @@ final class UserInfoView: UIView {
     private func setConstraints() {
         // MARK: - USER IMAGE CARD
         
-        NSLayoutConstraint.activate([
-            userCard.centerXAnchor.constraint(equalTo: centerXAnchor),
-            centerYAnchor.constraint(equalTo: userCard.centerYAnchor, constant: 200),
-            userCard.widthAnchor.constraint(equalToConstant: 300),
-            userCard.heightAnchor.constraint(equalToConstant: 250),
-        ])
+        userCard.snp.makeConstraints { (make) -> Void in
+            make.centerX.equalToSuperview()
+            make.centerY.equalToSuperview().offset(-200)
+            make.width.equalTo(300)
+            make.height.equalTo(250)
+        }
         
-        NSLayoutConstraint.activate([
-            userImageView.centerXAnchor.constraint(equalTo: userCard.centerXAnchor),
-            userImageView.topAnchor.constraint(equalTo: userCard.topAnchor, constant: 10),
-            userImageView.widthAnchor.constraint(equalToConstant: 180),
-            userImageView.heightAnchor.constraint(equalToConstant: 180),
-        ])
+        userImageView.snp.makeConstraints { (make) -> Void in
+            make.centerX.equalTo(userCard.snp.centerX)
+            make.top.equalTo(userCard.snp.top).offset(10)
+            make.width.equalTo(180)
+            make.height.equalTo(180)
+        }
         
-        NSLayoutConstraint.activate([
-            userCard.trailingAnchor.constraint(equalTo: userArrow.trailingAnchor),
-            userCard.bottomAnchor.constraint(equalTo: userArrow.bottomAnchor),
-            userArrow.widthAnchor.constraint(equalToConstant: 30),
-            userArrow.heightAnchor.constraint(equalToConstant: 30),
-        ])
+        userArrow.snp.makeConstraints { (make) -> Void in
+            make.trailing.equalTo(userCard.snp.trailing)
+            make.bottom.equalTo(userCard.snp.bottom)
+            make.width.equalTo(30)
+            make.height.equalTo(30)
+        }
         
         // MARK: - USER INFO CARD
         
-        NSLayoutConstraint.activate([
-            userName.centerXAnchor.constraint(equalTo: userCard.centerXAnchor),
-            userName.topAnchor.constraint(equalTo: userCard.topAnchor, constant: 20),
-        ])
+        userName.snp.makeConstraints { (make) -> Void in
+            make.centerX.equalTo(userCard.snp.centerX)
+            make.top.equalTo(userCard.snp.top).offset(20)
+        }
         
-        NSLayoutConstraint.activate([
-            userBio.centerXAnchor.constraint(equalTo: userCard.centerXAnchor),
-            userBio.topAnchor.constraint(equalTo: userName.bottomAnchor, constant: 20),
-            userCard.trailingAnchor.constraint(equalTo: userBio.trailingAnchor, constant: 40),
-            userBio.leadingAnchor.constraint(equalTo: userCard.leadingAnchor, constant: 40),
-        ])
+        userBio.snp.makeConstraints { (make) -> Void in
+            make.centerX.equalTo(userCard.snp.centerX)
+            make.top.equalTo(userName.snp.bottom).offset(20)
+            make.trailing.equalTo(userCard.snp.trailing).offset(-40)
+            make.leading.equalTo(userCard.snp.leading).offset(40)
+        }
         
-        NSLayoutConstraint.activate([
-            userLocation.centerXAnchor.constraint(equalTo: userCard.centerXAnchor),
-            userLocation.topAnchor.constraint(equalTo: userBio.bottomAnchor, constant: 10),
-            userCard.trailingAnchor.constraint(equalTo: userLocation.trailingAnchor, constant: 40),
-            userLocation.leadingAnchor.constraint(equalTo: userCard.leadingAnchor, constant: 40),
-        ])
+        userLocation.snp.makeConstraints { (make) -> Void in
+            make.centerX.equalTo(userCard.snp.centerX)
+            make.top.equalTo(userBio.snp.bottom).offset(20)
+            make.trailing.equalTo(userCard.snp.trailing).offset(-40)
+            make.leading.equalTo(userCard.snp.leading).offset(40)
+        }
         
-        NSLayoutConstraint.activate([
-            userCompany.centerXAnchor.constraint(equalTo: userCard.centerXAnchor),
-            userCompany.topAnchor.constraint(equalTo: userLocation.bottomAnchor, constant: 10),
-            userCard.trailingAnchor.constraint(equalTo: userCompany.trailingAnchor, constant: 40),
-            userCompany.leadingAnchor.constraint(equalTo: userCard.leadingAnchor, constant: 40),
-        ])
+        userCompany.snp.makeConstraints { (make) -> Void in
+            make.centerX.equalTo(userCard.snp.centerX)
+            make.top.equalTo(userLocation.snp.bottom).offset(20)
+            make.trailing.equalTo(userCard.snp.trailing).offset(-40)
+            make.leading.equalTo(userCard.snp.leading).offset(40)
+        }
         
         // MARK: - LIST
         
-        NSLayoutConstraint.activate([
-            repositoriesList.centerXAnchor.constraint(equalTo: centerXAnchor),
-            centerYAnchor.constraint(equalTo: repositoriesList.topAnchor, constant: 50),
-            repositoriesList.bottomAnchor.constraint(equalTo: safeAreaLayoutGuide.bottomAnchor),
-            repositoriesList.leadingAnchor.constraint(equalTo: leadingAnchor),
-            repositoriesList.trailingAnchor.constraint(equalTo: trailingAnchor),
-        ])
+        repositoriesList.snp.makeConstraints { (make) -> Void in
+            make.centerX.equalToSuperview()
+            make.top.equalTo(snp.centerY).offset(-50)
+            make.trailing.equalTo(snp.trailing)
+            make.leading.equalTo(snp.leading)
+            make.bottom.equalTo(safeAreaInsets.bottom)
+        }
         
-        NSLayoutConstraint.activate([
-            repositoriesListContent.topAnchor.constraint(equalTo: repositoriesList.topAnchor),
-            repositoriesListContent.bottomAnchor.constraint(equalTo: repositoriesList.bottomAnchor),
-            repositoriesListContent.leadingAnchor.constraint(equalTo: repositoriesList.leadingAnchor),
-            repositoriesListContent.trailingAnchor.constraint(equalTo: repositoriesList.trailingAnchor),
-            repositoriesListContent.centerXAnchor.constraint(equalTo: repositoriesList.centerXAnchor),
-        ])
+        repositoriesListContent.snp.makeConstraints { (make) -> Void in
+            make.top.equalTo(repositoriesList.snp.top)
+            make.bottom.equalTo(repositoriesList.snp.bottom)
+            make.leading.equalTo(repositoriesList.snp.leading)
+            make.trailing.equalTo(repositoriesList.snp.trailing)
+            make.centerX.equalTo(repositoriesList.snp.centerX)
+        }
     }
-    
-//    private func setTableViewConstraints() {
-//        NSLayoutConstraint.activate([
-//            tableView.centerXAnchor.constraint(equalTo: centerXAnchor),
-//            tableView.bottomAnchor.constraint(equalTo: bottomAnchor),
-//            tableView.widthAnchor.constraint(equalToConstant: 400),
-//            tableView.heightAnchor.constraint(equalToConstant: 500),
-//        ])
-//    }
 }

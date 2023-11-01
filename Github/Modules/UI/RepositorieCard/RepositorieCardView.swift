@@ -61,21 +61,21 @@ final class RepositorieCardView: UIView {
     }
     
     func setConstraints() {
-        NSLayoutConstraint.activate([
-            userRepositoriesName.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 20),
-            userRepositoriesName.topAnchor.constraint(equalTo: topAnchor, constant: 20),
-            userRepositoriesName.widthAnchor.constraint(equalToConstant: 200)
-        ])
+        userRepositoriesName.snp.makeConstraints { (make) -> Void in
+            make.leading.equalTo(snp.leading).offset(20)
+            make.top.equalTo(snp.top).offset(20)
+            make.width.equalTo(200)
+        }
         
-        NSLayoutConstraint.activate([
-            userRepositoriesDescription.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 20),
-            userRepositoriesDescription.topAnchor.constraint(equalTo: topAnchor, constant: 60),
-            userRepositoriesDescription.widthAnchor.constraint(equalToConstant: 250),
-        ])
+        userRepositoriesDescription.snp.makeConstraints { (make) -> Void in
+            make.leading.equalTo(snp.leading).offset(20)
+            make.top.equalTo(snp.top).offset(60)
+            make.width.equalTo(250)
+        }
         
-        NSLayoutConstraint.activate([
-            trailingAnchor.constraint(equalTo: userRepositoriesLanguage.trailingAnchor, constant: 20),
-            userRepositoriesLanguage.topAnchor.constraint(equalTo: topAnchor, constant: 20),
-        ])
+        userRepositoriesLanguage.snp.makeConstraints { (make) -> Void in
+            make.trailing.equalTo(snp.trailing).offset(-20)
+            make.top.equalTo(snp.top).offset(20)
+        }
     }
 }
