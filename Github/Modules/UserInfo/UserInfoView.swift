@@ -49,6 +49,17 @@ final class UserInfoView: UIView {
         return userArrow
     }()
     
+    var segmentedControl = {
+       let control = UISegmentedControl(items: ["Cards", "TableView"])
+        
+        control.selectedSegmentIndex = 0
+        control.backgroundColor = .white
+        control.layer.cornerRadius = 20
+        control.translatesAutoresizingMaskIntoConstraints = false
+        
+        return control
+    }()
+    
     var userName = {
         let userName = UILabel()
         
@@ -111,19 +122,22 @@ final class UserInfoView: UIView {
         return list
     }()
     
-//    var tableView: UITableView = {
-//        let tableView = UITableView(frame: .zero, style: .grouped)
-//        tableView.register(UITableViewCell.self, forCellReuseIdentifier: "cell")
-//        tableView.translatesAutoresizingMaskIntoConstraints = false
-//        
-//        return tableView
-//    }()
+    var tableView: UITableView = {
+        let tableView = UITableView(frame: .zero, style: .grouped)
+        
+        tableView.register(UITableViewCell.self, forCellReuseIdentifier: "cell")
+        tableView.isHidden = true
+        tableView.translatesAutoresizingMaskIntoConstraints = false
+        
+        return tableView
+    }()
     
     func setupUI() {
         backgroundColor = .black
         
         repositoriesList.addSubview(repositoriesListContent)
         
+        userCard.addSubview(segmentedControl)
         userCard.addSubview(userArrow)
         userCard.addSubview(userImageView)
         userCard.addSubview(userName)
@@ -133,10 +147,9 @@ final class UserInfoView: UIView {
         
         addSubview(repositoriesList)
         addSubview(userCard)
-        //addSubview(tableView)
+        addSubview(tableView)
         
         setConstraints()
-        //setTableViewConstraints()
     }
     
     private func setConstraints() {
@@ -146,14 +159,14 @@ final class UserInfoView: UIView {
             make.centerX.equalToSuperview()
             make.centerY.equalToSuperview().offset(-200)
             make.width.equalTo(300)
-            make.height.equalTo(250)
+            make.height.equalTo(300)
         }
         
         userImageView.snp.makeConstraints { (make) -> Void in
             make.centerX.equalTo(userCard.snp.centerX)
-            make.top.equalTo(userCard.snp.top).offset(10)
-            make.width.equalTo(180)
-            make.height.equalTo(180)
+            make.top.equalTo(userCard.snp.top).offset(20)
+            make.width.equalTo(200)
+            make.height.equalTo(200)
         }
         
         userArrow.snp.makeConstraints { (make) -> Void in
@@ -161,6 +174,13 @@ final class UserInfoView: UIView {
             make.bottom.equalTo(userCard.snp.bottom)
             make.width.equalTo(30)
             make.height.equalTo(30)
+        }
+        
+        segmentedControl.snp.makeConstraints { (make) -> Void in
+            make.centerX.equalTo(userCard.snp.centerX)
+            make.bottom.equalTo(userCard.snp.bottom)
+            make.width.equalTo(200)
+            make.height.equalTo(50)
         }
         
         // MARK: - USER INFO CARD
@@ -195,7 +215,7 @@ final class UserInfoView: UIView {
         
         repositoriesList.snp.makeConstraints { (make) -> Void in
             make.centerX.equalToSuperview()
-            make.top.equalTo(snp.centerY).offset(-50)
+            make.top.equalTo(snp.centerY)
             make.trailing.equalTo(snp.trailing)
             make.leading.equalTo(snp.leading)
             make.bottom.equalTo(safeAreaInsets.bottom)
@@ -207,6 +227,16 @@ final class UserInfoView: UIView {
             make.leading.equalTo(repositoriesList.snp.leading)
             make.trailing.equalTo(repositoriesList.snp.trailing)
             make.centerX.equalTo(repositoriesList.snp.centerX)
+        }
+        
+        // MARK: - TABLE VIEW
+        
+        tableView.snp.makeConstraints { (make) -> Void in
+            make.centerX.equalToSuperview()
+            make.top.equalTo(snp.centerY)
+            make.trailing.equalTo(snp.trailing)
+            make.leading.equalTo(snp.leading)
+            make.bottom.equalTo(safeAreaInsets.bottom)
         }
     }
 }
