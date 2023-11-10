@@ -11,25 +11,37 @@ protocol HomeInteractorProtocol {
     func validUsername(username: String)
 }
 
+protocol NetworkSession {
+    func dataTask(
+        with url: URL,
+        completionHandler: @escaping @Sendable (Data?, URLResponse?, Error?) -> Void
+    ) -> URLSessionDataTask
+}
+
 final class HomeInteractor {
     
     let presenter: HomePresenterProtocol
+    let networkSession: NetworkSession
     
     struct Constants {
         static let apiURL = "https://api.github.com/users/"
     }
     
-    init(presenter: HomePresenterProtocol) {
+    init(presenter: HomePresenterProtocol, networkSession: NetworkSession) {
         self.presenter = presenter
+        self.networkSession = networkSession
     }
     
-    private func getGithubUserInfo(username: String) {
+    func getGithubUserInfo(username: String) {
         guard let url = URL(string: Constants.apiURL + username) else {
             return
         }
         
-        URLSession.shared.dataTask(with: url) { [weak self] (data, res, err) in
+        networkSession.dataTask(with: url) { [weak self] (data, res, err) in
             guard let data = data else {
+                DispatchQueue.main.async {
+                    self?.presenter.showServiceError()
+                }
                 return
             }
             
@@ -37,7 +49,7 @@ final class HomeInteractor {
                 let json = try JSONDecoder().decode(UserInfo.self, from: data)
                 let imageURL = json.avatar_url
                 
-                URLSession.shared.dataTask(with: imageURL) { (data, response, error) in
+                self?.networkSession.dataTask(with: imageURL) { (data, response, error) in
                     if let error = error {
                         print("Error: \(error)")
                         return

@@ -7,7 +7,7 @@
 
 import Foundation
 
-struct Repos: Codable {
+struct Repos: Codable, Equatable {
     let name: String
     let html_url: String
     let description: String?

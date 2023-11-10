@@ -10,6 +10,7 @@ import Foundation
 protocol HomePresenterProtocol {
     func showEmptyUserAlert()
     func showUserNotFoundAlert()
+    func showServiceError()
     func navigateToUserInfo(data: UserInfo, imageData: Data, repos: [Repos])
 }
 
@@ -26,6 +27,10 @@ final class HomePresenter {
             static let title = "Usuario não encontrado"
             static let description = "Não foi encontrado um usuário do Github com o nome informado"
         }
+        enum ServiceError {
+            static let title = "Erro de serviço"
+            static let description = "Erro ao realizar a requisição"
+        }
     }
 }
 
@@ -40,5 +45,9 @@ extension HomePresenter: HomePresenterProtocol {
     
     func navigateToUserInfo(data: UserInfo, imageData: Data, repos: [Repos]) {
         coordinator?.showViewController(viewController: UserInfoFactory.build(userInfo: data, imageData: imageData, repos: repos))
+    }
+    
+    func showServiceError() {
+        coordinator?.showErrorAlert(title: AlertProps.ServiceError.title, description: AlertProps.ServiceError.description)
     }
 }

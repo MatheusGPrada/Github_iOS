@@ -8,9 +8,9 @@
 import UIKit
 
 struct HomeFactory {
-    static func build() -> UIViewController {
+    static func build() -> HomeViewController {
         let presenter = HomePresenter()
-        let interactor = HomeInteractor(presenter: presenter)
+        let interactor = HomeInteractor(presenter: presenter, networkSession: URLSession.shared)
         let view = HomeViewController(interactor: interactor)
         let coordinator = HomeCoordinator(viewController: view)
 
@@ -18,3 +18,8 @@ struct HomeFactory {
         return view
     }
 }
+
+extension URLSession: NetworkSession {
+}
+
+// TO DO - IMPROVE
