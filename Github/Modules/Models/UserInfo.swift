@@ -10,9 +10,9 @@ import Foundation
 struct UserInfo: Codable, Equatable {
     let avatar_url: URL
     let url: URL
-    let company: String
-    let location: String
-    let bio: String
-    let name: String
+    let company: String?
+    let location: String?
+    let bio: String?
+    let name: String?
     let repos_url: URL
 }

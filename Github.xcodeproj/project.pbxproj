@@ -7,6 +7,9 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		2F26EC6C2B0790AE002CFA1F /* UserInfoService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2F26EC6B2B0790AE002CFA1F /* UserInfoService.swift */; };
+		2F26EC6E2B0793CA002CFA1F /* UserImageService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2F26EC6D2B0793CA002CFA1F /* UserImageService.swift */; };
+		2F26EC702B0794B1002CFA1F /* UserReposService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2F26EC6F2B0794B1002CFA1F /* UserReposService.swift */; };
 		2F67C6502ADC3B1F005A60AE /* HomeFactory.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2F67C64F2ADC3B1F005A60AE /* HomeFactory.swift */; };
 		2F67C6522ADC4E3C005A60AE /* UserInfoFactory.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2F67C6512ADC4E3C005A60AE /* UserInfoFactory.swift */; };
 		2F67C6542ADD9D7F005A60AE /* UserInfoInteractor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2F67C6532ADD9D7F005A60AE /* UserInfoInteractor.swift */; };
@@ -52,6 +55,9 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		2F26EC6B2B0790AE002CFA1F /* UserInfoService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserInfoService.swift; sourceTree = "<group>"; };
+		2F26EC6D2B0793CA002CFA1F /* UserImageService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserImageService.swift; sourceTree = "<group>"; };
+		2F26EC6F2B0794B1002CFA1F /* UserReposService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserReposService.swift; sourceTree = "<group>"; };
 		2F67C64F2ADC3B1F005A60AE /* HomeFactory.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeFactory.swift; sourceTree = "<group>"; };
 		2F67C6512ADC4E3C005A60AE /* UserInfoFactory.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserInfoFactory.swift; sourceTree = "<group>"; };
 		2F67C6532ADD9D7F005A60AE /* UserInfoInteractor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserInfoInteractor.swift; sourceTree = "<group>"; };
@@ -108,6 +114,16 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		2F26EC6A2B07909A002CFA1F /* Services */ = {
+			isa = PBXGroup;
+			children = (
+				2F26EC6B2B0790AE002CFA1F /* UserInfoService.swift */,
+				2F26EC6D2B0793CA002CFA1F /* UserImageService.swift */,
+				2F26EC6F2B0794B1002CFA1F /* UserReposService.swift */,
+			);
+			path = Services;
+			sourceTree = "<group>";
+		};
 		2F67C65D2AE7EF41005A60AE /* UI */ = {
 			isa = PBXGroup;
 			children = (
@@ -203,6 +219,7 @@
 		2FB95FD92AD994EC00DF96DD /* Modules */ = {
 			isa = PBXGroup;
 			children = (
+				2F26EC6A2B07909A002CFA1F /* Services */,
 				2F67C65D2AE7EF41005A60AE /* UI */,
 				2FB95FDB2AD9B6AC00DF96DD /* Models */,
 				2FB95FDE2AD9F9D300DF96DD /* UserInfo */,
@@ -386,6 +403,8 @@
 				2FB95FA42AD87CEA00DF96DD /* HomeViewController.swift in Sources */,
 				2F67C6542ADD9D7F005A60AE /* UserInfoInteractor.swift in Sources */,
 				2F8120802AFE615D00DB46E3 /* NetworkSession.swift in Sources */,
+				2F26EC6C2B0790AE002CFA1F /* UserInfoService.swift in Sources */,
+				2F26EC702B0794B1002CFA1F /* UserReposService.swift in Sources */,
 				2F79D0DF2AF1216900D2CE62 /* HomeCoordinator.swift in Sources */,
 				2F67C6502ADC3B1F005A60AE /* HomeFactory.swift in Sources */,
 				2FB95FE02AD9F9E700DF96DD /* UserInfoViewController.swift in Sources */,
@@ -393,6 +412,7 @@
 				2F67C65A2AE16D9D005A60AE /* Settings.swift in Sources */,
 				2FB95FA02AD87CEA00DF96DD /* AppDelegate.swift in Sources */,
 				2FB95FA22AD87CEA00DF96DD /* SceneDelegate.swift in Sources */,
+				2F26EC6E2B0793CA002CFA1F /* UserImageService.swift in Sources */,
 				2FB95FD82AD990E600DF96DD /* HomeInteractor.swift in Sources */,
 				2FB95FD62AD990DC00DF96DD /* HomePresenter.swift in Sources */,
 				2FB95FDD2AD9B6C500DF96DD /* UserInfo.swift in Sources */,

@@ -18,14 +18,14 @@ final class HomeCoordinator {
         let description: String
         
         static let emptyUser: AlertProps = .init(title: "Usuario vazio", description: "Informe um usuário")
-        
         static let userNotFound: AlertProps = .init(title: "Usuario não encontrado", description: "Não foi encontrado um usuário do Github com o nome informado")
-        
         static let serviceError: AlertProps = .init(title: "Erro de serviço", description: "Erro ao realizar a requisição")
+        static let reposNotFound: AlertProps = .init(title: "Repositórios não encontrados", description: "O usuário informado não possui repositórios")
+        static let reposDecodeError: AlertProps = .init(title: "Erro no decode dos repos", description: "Ocorreu um erro no decode dos repositórios")
     }
     
     //TO DO - WEAK VAR ?
-    //TO DO - navigateToUserInfo PARAM TO STRUCT
+    //TO DO - MOVE IMAGE AND REPO SERVICE TO UserInfoInteractor
     
     func navigateToUserInfo(data: UserInfo, imageData: Data, repos: [Repos]) {
         DispatchQueue.main.async {

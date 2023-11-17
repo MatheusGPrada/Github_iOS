@@ -9,7 +9,6 @@ import Foundation
 
 protocol HomePresenterProtocol {
     func showEmptyUserAlert()
-    func showUserNotFoundAlert()
     func showServiceError(_ error: Error)
     func showUserInfo(data: UserInfo, imageData: Data, repos: [Repos])
 }
@@ -28,20 +27,18 @@ extension HomePresenter: HomePresenterProtocol {
         coordinator.showErrorAlert(alert: .emptyUser)
     }
     
-    func showUserNotFoundAlert() {
-        coordinator.showErrorAlert(alert: .userNotFound)
-    }
-    
     func showUserInfo(data: UserInfo, imageData: Data, repos: [Repos]) {
         coordinator.navigateToUserInfo(data: data, imageData: imageData, repos: repos)
     }
     
-    //TO DO - ADD ERROR SERVICE
     func showServiceError(_ error: Error) {
         switch error {
-            //TO DO - REMOVE SERVICERROR FROM INTERACTOR
-        case HomeInteractor.ServiceErrors.userNotFound:
-            showUserNotFoundAlert()
+        case UserInfoService.ServiceErrors.userNotFound:
+            coordinator.showErrorAlert(alert: .userNotFound)
+        case UserReposService.ServiceErrors.reposNotFound:
+            coordinator.showErrorAlert(alert: .reposNotFound)
+        case UserReposService.ServiceErrors.reposDecodeError:
+            coordinator.showErrorAlert(alert: .reposDecodeError)
         default:
             coordinator.showErrorAlert(alert: .serviceError)
         }
