@@ -11,19 +11,34 @@ import UIKit
 
 final class HomeCoordinator {
     
-    weak var homeViewController: HomeViewController?
+    weak var viewController: UIViewController?
     
-    init(viewController: HomeViewController) {
-        self.homeViewController = viewController
+    struct AlertProps {
+        let title: String
+        let description: String
+        
+        static let emptyUser: AlertProps = .init(title: "Usuario vazio", description: "Informe um usuário")
+        
+        static let userNotFound: AlertProps = .init(title: "Usuario não encontrado", description: "Não foi encontrado um usuário do Github com o nome informado")
+        
+        static let serviceError: AlertProps = .init(title: "Erro de serviço", description: "Erro ao realizar a requisição")
     }
     
-    func showViewController(viewController: UIViewController) {
-        homeViewController?.navigationController?.pushViewController(viewController, animated: true)
+    //TO DO - WEAK VAR ?
+    //TO DO - navigateToUserInfo PARAM TO STRUCT
+    
+    func navigateToUserInfo(data: UserInfo, imageData: Data, repos: [Repos]) {
+        DispatchQueue.main.async {
+            let userInfoViewController = UserInfoFactory.build(userInfo: data, imageData: imageData, repos: repos)
+            self.viewController?.navigationController?.pushViewController(userInfoViewController, animated: true)
+        }
     }
     
-    func showErrorAlert(title: String, description: String){
-        let alertController = UIAlertController(title: title, message: description, preferredStyle: .alert)
-        alertController.addAction(UIAlertAction(title: "OK", style: UIAlertAction.Style.default))
-        homeViewController?.present(alertController, animated: true, completion: nil)
+    func showErrorAlert(alert: AlertProps){
+        DispatchQueue.main.async {
+            let alertController = UIAlertController(title: alert.title, message: alert.description, preferredStyle: .alert)
+            alertController.addAction(UIAlertAction(title: "OK", style: UIAlertAction.Style.default))
+            self.viewController?.present(alertController, animated: true, completion: nil)
+        }
     }
 }

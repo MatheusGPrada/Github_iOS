@@ -10,44 +10,40 @@ import Foundation
 protocol HomePresenterProtocol {
     func showEmptyUserAlert()
     func showUserNotFoundAlert()
-    func showServiceError()
-    func navigateToUserInfo(data: UserInfo, imageData: Data, repos: [Repos])
+    func showServiceError(_ error: Error)
+    func showUserInfo(data: UserInfo, imageData: Data, repos: [Repos])
 }
 
 final class HomePresenter {
     
-    var coordinator: HomeCoordinator?
+    let coordinator: HomeCoordinator
     
-    enum AlertProps {
-        enum EmptyUser {
-            static let title = "Usuario vazio"
-            static let description = "Informe um usuário"
-        }
-        enum UserNotFound {
-            static let title = "Usuario não encontrado"
-            static let description = "Não foi encontrado um usuário do Github com o nome informado"
-        }
-        enum ServiceError {
-            static let title = "Erro de serviço"
-            static let description = "Erro ao realizar a requisição"
-        }
+    init(coordinator: HomeCoordinator) {
+        self.coordinator = coordinator
     }
 }
 
 extension HomePresenter: HomePresenterProtocol {
     func showEmptyUserAlert() {
-        coordinator?.showErrorAlert(title: AlertProps.EmptyUser.title, description: AlertProps.EmptyUser.description)
+        coordinator.showErrorAlert(alert: .emptyUser)
     }
     
     func showUserNotFoundAlert() {
-        coordinator?.showErrorAlert(title: AlertProps.UserNotFound.title, description: AlertProps.UserNotFound.description)
+        coordinator.showErrorAlert(alert: .userNotFound)
     }
     
-    func navigateToUserInfo(data: UserInfo, imageData: Data, repos: [Repos]) {
-        coordinator?.showViewController(viewController: UserInfoFactory.build(userInfo: data, imageData: imageData, repos: repos))
+    func showUserInfo(data: UserInfo, imageData: Data, repos: [Repos]) {
+        coordinator.navigateToUserInfo(data: data, imageData: imageData, repos: repos)
     }
     
-    func showServiceError() {
-        coordinator?.showErrorAlert(title: AlertProps.ServiceError.title, description: AlertProps.ServiceError.description)
+    //TO DO - ADD ERROR SERVICE
+    func showServiceError(_ error: Error) {
+        switch error {
+            //TO DO - REMOVE SERVICERROR FROM INTERACTOR
+        case HomeInteractor.ServiceErrors.userNotFound:
+            showUserNotFoundAlert()
+        default:
+            coordinator.showErrorAlert(alert: .serviceError)
+        }
     }
 }

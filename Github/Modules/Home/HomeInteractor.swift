@@ -32,56 +32,112 @@ final class HomeInteractor {
         self.networkSession = networkSession
     }
     
-    func getGithubUserInfo(username: String) {
+    enum ServiceErrors: Error, Equatable {
+        case generic
+        case userNotFound
+        case imageNotFound
+        case reposNotFound
+        case reposDecodeError
+    }
+    
+    //TO DO - REFACTOR NEW SEVICE FILE
+    private var userDataTask: URLSessionDataTask?
+    private func getUserInfo(username: String, completion: @escaping (Result<UserInfo, Error>) -> Void ) {
         guard let url = URL(string: Constants.apiURL + username) else {
+            completion(.failure(ServiceErrors.generic))
             return
         }
         
-        networkSession.dataTask(with: url) { [weak self] (data, res, err) in
+        userDataTask = networkSession.dataTask(with: url) { (data, res, err) in
             guard let data = data else {
-                DispatchQueue.main.async {
-                    self?.presenter.showServiceError()
-                }
+                completion(.failure(ServiceErrors.generic))
                 return
             }
             
             do {
-                let json = try JSONDecoder().decode(UserInfo.self, from: data)
-                let imageURL = json.avatar_url
-                
-                self?.networkSession.dataTask(with: imageURL) { (data, response, error) in
-                    if let error = error {
-                        print("Error: \(error)")
-                        return
-                    }
-                    let imageData = data!
-                    
-                    URLSession.shared.dataTask(with: json.repos_url) { (data, response, error) in
-                        if let error = error {
-                            print("Error: \(error)")
-                            return
-                        }
-                        do {
-                            let repos = data!
-                            let userRepos = try JSONDecoder().decode([Repos].self, from: repos)
-                            
-                            DispatchQueue.main.async {
-                                self?.presenter.navigateToUserInfo(data: json, imageData: imageData, repos: userRepos)
-                            }
-                        } catch {
-                            DispatchQueue.main.async {
-                                self?.presenter.showUserNotFoundAlert()
-                            }
-                        }
-                    }.resume()
-                }.resume()
-            } catch {
-                DispatchQueue.main.async {
-                    self?.presenter.showUserNotFoundAlert()
-                }
+                let userInfo = try JSONDecoder().decode(UserInfo.self, from: data)
+                completion(.success(userInfo))
+            }catch{
+                completion(.failure(ServiceErrors.userNotFound))
             }
-
-        }.resume()
+        }
+        userDataTask?.resume()
+    }
+    
+    private var imageDataTask: URLSessionDataTask?
+    private func getUserImage(avatarUrl: URL, completion: @escaping (Result<Data, Error>) -> Void) {
+        imageDataTask = networkSession.dataTask(with: avatarUrl) { (imageData, _, imageError) in
+            guard let imageData = imageData else {
+                completion(.failure(ServiceErrors.imageNotFound))
+                return
+            }
+            
+            completion(.success(imageData))
+        }
+        
+        imageDataTask?.resume()
+    }
+    
+    private var reposDataTask: URLSessionDataTask?
+    private func getUserRepos(reposURL: URL, completion: @escaping (Result<[Repos], Error>) -> Void) {
+        reposDataTask = networkSession.dataTask(with: reposURL) { (reposData, _, reposError) in
+            
+            guard let reposData = reposData else {
+                completion(.failure(ServiceErrors.reposNotFound))
+                return
+            }
+            
+            do {
+                let userRepos = try JSONDecoder().decode([Repos].self, from: reposData)
+                completion(.success(userRepos))
+            } catch {
+                completion(.failure(ServiceErrors.reposDecodeError))
+            }
+        }
+        
+        reposDataTask?.resume()
+    }
+    
+    deinit{
+        userDataTask?.cancel()
+        imageDataTask?.cancel()
+        reposDataTask?.cancel()
+    }
+    
+    func getUserRepos(userInfo: UserInfo, imageData: Data) {
+        getUserRepos(reposURL: userInfo.repos_url) { [weak self] result in
+            
+            switch result {
+            case let .success(repos):
+                self?.presenter.showUserInfo(data: userInfo, imageData: imageData, repos: repos)
+            case let .failure(error):
+                self?.presenter.showServiceError(error)
+            }
+        }
+    }
+    
+    func getUserImage(userInfo: UserInfo) {
+        getUserImage(avatarUrl: userInfo.avatar_url) { [weak self] result in
+            
+            switch result {
+            case let .success(imageData):
+                self?.getUserRepos(userInfo: userInfo, imageData: imageData)
+            case .failure:
+                //TO DO - ADD DEFAULT IMAGE
+                self?.getUserRepos(userInfo: userInfo, imageData: .init())
+            }
+        }
+    }
+    
+    func getGithubUserInfo(username: String) {
+        getUserInfo(username: username) { [weak self] result in
+            switch result {
+            case let .success(userInfo):
+                self?.getUserImage(userInfo: userInfo)
+            case let .failure(error):
+                self?.presenter.showServiceError(error)
+            }
+        }
     }
 }
 
