@@ -9,9 +9,16 @@ import UIKit
 
 struct HomeFactory {
     static func build() -> HomeViewController {
+        let networkSession = URLSession.shared
         let coordinator = HomeCoordinator()
-        let presenter = HomePresenter(coordinator: coordinator)
-        let interactor = HomeInteractor(presenter: presenter, networkSession: URLSession.shared)
+        let thread = HomeCoordinatorThreadWrapper(coordinator: coordinator)
+        let presenter = HomePresenter(coordinator: thread)
+        
+        let userInfoService = UserInfoService(networkSession: networkSession)
+        let userImageService = UserImageService(networkSession: networkSession)
+        let userReposService = UserReposService(networkSession: networkSession)
+        
+        let interactor = HomeInteractor(presenter: presenter, networkSession: networkSession, userInfoService: userInfoService as! UserInfoServiceProtocol, userImageService: userImageService as! UserImageServiceProtocol, userReposService: userReposService as! UserReposServiceProtocol)
         let view = HomeViewController(interactor: interactor)
         
 

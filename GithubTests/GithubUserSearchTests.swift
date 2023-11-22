@@ -80,7 +80,6 @@ final class GithubUserSearchTests: XCTestCase {
     // TO DO - testar se o endpoint e os params estao corretos
     // testar se o contrato é válido (retorno)
     // garantir que esteja chamando na ordem certa
-    // criar implementacao do networksession que devolve o completionhandler na main thread (decorator pattern)
 }
 
 private extension GithubUserSearchTests {
@@ -150,7 +149,13 @@ private extension GithubUserSearchTests {
     func makeSUT(addRightParams: Bool?) -> (HomeInteractor, Doubles){
         let doubles = Doubles()
         let networkParams = addRightParams == nil ? doubles.emptyNetworkSessionMock : addRightParams! ? doubles.rightParamsNetworkSessionMock : doubles.wrongParamsNetworkSessionMock
-        let sut = HomeInteractor(presenter: doubles.presenterSpy, networkSession: networkParams)
+        
+        // TO DO - REFACTOR
+        let userInfoService = UserInfoService(networkSession: networkParams)
+        let userImageService = UserInfoService(networkSession: networkParams)
+        let userReposService = UserInfoService(networkSession: networkParams)
+        
+        let sut = HomeInteractor(presenter: doubles.presenterSpy, networkSession: networkParams, userInfoService: userInfoService, userImageService: userImageService as! UserImageServiceProtocol, userReposService: userReposService as! UserReposServiceProtocol)
         
         //teste de memory leak
         addTeardownBlock { [weak sut, weak doubles] in

@@ -7,7 +7,11 @@
 
 import Foundation
 
-class UserReposService {
+protocol UserReposServiceProtocol {
+    func getUserRepos(reposURL: URL, completion: @escaping (Result<[Repos], Error>) -> Void)
+}
+
+final class UserReposService {
     
     enum ServiceErrors: Error, Equatable {
         case reposNotFound
@@ -21,6 +25,12 @@ class UserReposService {
         self.networkSession = networkSession
     }
     
+    deinit{
+        reposDataTask?.cancel()
+    }
+}
+
+extension UserReposService: UserReposServiceProtocol {
     func getUserRepos(reposURL: URL, completion: @escaping (Result<[Repos], Error>) -> Void) {
         reposDataTask = networkSession.dataTask(with: reposURL) { (reposData, _, reposError) in
             
@@ -31,12 +41,6 @@ class UserReposService {
             
             do {
                 let userRepos = try JSONDecoder().decode([Repos].self, from: reposData)
-                
-                if userRepos.count == 0 {
-                    completion(.failure(ServiceErrors.reposNotFound))
-                    return
-                }
-                
                 completion(.success(userRepos))
             } catch {
                 completion(.failure(ServiceErrors.reposDecodeError))
@@ -44,9 +48,5 @@ class UserReposService {
         }
         
         reposDataTask?.resume()
-    }
-    
-    deinit{
-        reposDataTask?.cancel()
     }
 }

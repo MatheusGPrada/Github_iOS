@@ -15,10 +15,14 @@ protocol HomePresenterProtocol {
 
 final class HomePresenter {
     
-    let coordinator: HomeCoordinator
+    let coordinator: HomeCoordinatorProtocol
     
-    init(coordinator: HomeCoordinator) {
+    init(coordinator: HomeCoordinatorProtocol) {
         self.coordinator = coordinator
+    }
+    
+    enum ServiceErrors: Error, Equatable {
+        case reposNotFound
     }
 }
 
@@ -28,6 +32,10 @@ extension HomePresenter: HomePresenterProtocol {
     }
     
     func showUserInfo(data: UserInfo, imageData: Data, repos: [Repos]) {
+        if repos.count == 0 {
+            showServiceError(ServiceErrors.reposNotFound)
+            return
+        }
         coordinator.navigateToUserInfo(data: data, imageData: imageData, repos: repos)
     }
     
@@ -39,6 +47,8 @@ extension HomePresenter: HomePresenterProtocol {
             coordinator.showErrorAlert(alert: .reposNotFound)
         case UserReposService.ServiceErrors.reposDecodeError:
             coordinator.showErrorAlert(alert: .reposDecodeError)
+        case HomePresenter.ServiceErrors.reposNotFound:
+            coordinator.showErrorAlert(alert: .reposNotFound)
         default:
             coordinator.showErrorAlert(alert: .serviceError)
         }

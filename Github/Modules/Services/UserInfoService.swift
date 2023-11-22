@@ -7,7 +7,11 @@
 
 import Foundation
 
-class UserInfoService {
+protocol UserInfoServiceProtocol {
+    func getUserInfo(username: String, completion: @escaping (Result<UserInfo, Error>) -> Void )
+}
+
+final class UserInfoService {
     
     private struct Constants {
         static let apiURL = "https://api.github.com/users/"
@@ -25,6 +29,12 @@ class UserInfoService {
         self.networkSession = networkSession
     }
     
+    deinit{
+        userDataTask?.cancel()
+    }
+}
+
+extension UserInfoService: UserInfoServiceProtocol {
     func getUserInfo(username: String, completion: @escaping (Result<UserInfo, Error>) -> Void ) {
         guard let url = URL(string: Constants.apiURL + username) else {
             completion(.failure(ServiceErrors.generic))
@@ -45,9 +55,5 @@ class UserInfoService {
             }
         }
         userDataTask?.resume()
-    }
-    
-    deinit{
-        userDataTask?.cancel()
     }
 }

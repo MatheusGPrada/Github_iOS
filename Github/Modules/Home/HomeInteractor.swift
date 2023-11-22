@@ -22,17 +22,21 @@ final class HomeInteractor {
     
     let presenter: HomePresenterProtocol
     let networkSession: NetworkSession
-    lazy var userInfoService = UserInfoService(networkSession: networkSession)
-    lazy var userImageService = UserImageService(networkSession: networkSession)
-    lazy var userReposService = UserReposService(networkSession: networkSession)
+    
+    let userInfoService: UserInfoServiceProtocol
+    let userImageService: UserImageServiceProtocol
+    let userReposService: UserReposServiceProtocol
     
     struct Constants {
         static let apiURL = "https://api.github.com/users/"
     }
     
-    init(presenter: HomePresenterProtocol, networkSession: NetworkSession) {
+    init(presenter: HomePresenterProtocol, networkSession: NetworkSession, userInfoService: UserInfoServiceProtocol, userImageService: UserImageServiceProtocol, userReposService: UserReposServiceProtocol) {
         self.presenter = presenter
         self.networkSession = networkSession
+        self.userInfoService = userInfoService
+        self.userImageService = userImageService
+        self.userReposService = userReposService
     }
     
     func getUserRepos(userInfo: UserInfo, imageData: Data) {

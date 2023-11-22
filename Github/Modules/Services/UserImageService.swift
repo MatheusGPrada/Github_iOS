@@ -7,7 +7,11 @@
 
 import Foundation
 
-class UserImageService {
+protocol UserImageServiceProtocol {
+    func getUserImage(avatarUrl: URL, completion: @escaping (Result<Data, Error>) -> Void)
+}
+
+final class UserImageService {
     
     enum ServiceErrors: Error, Equatable {
         case generic
@@ -20,6 +24,12 @@ class UserImageService {
         self.networkSession = networkSession
     }
     
+    deinit{
+        imageDataTask?.cancel()
+    }
+}
+
+extension UserImageService: UserImageServiceProtocol {
     func getUserImage(avatarUrl: URL, completion: @escaping (Result<Data, Error>) -> Void) {
         imageDataTask = networkSession.dataTask(with: avatarUrl) { (imageData, _, imageError) in
             guard let imageData = imageData else {
@@ -31,9 +41,5 @@ class UserImageService {
         }
         
         imageDataTask?.resume()
-    }
-    
-    deinit{
-        imageDataTask?.cancel()
     }
 }
