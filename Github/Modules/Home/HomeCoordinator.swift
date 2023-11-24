@@ -61,17 +61,13 @@ final class HomeCoordinator: HomeCoordinatorProtocol {
     //TO DO - MOVE IMAGE AND REPO SERVICE TO UserInfoInteractor
     
     func navigateToUserInfo(data: UserInfo, imageData: Data, repos: [Repos]) {
-//        DispatchQueue.main.async {
             let userInfoViewController = UserInfoFactory.build(userInfo: data, imageData: imageData, repos: repos)
             self.viewController?.navigationController?.pushViewController(userInfoViewController, animated: true)
-//        }
     }
     
     func showErrorAlert(alert: AlertProps){
-        //DispatchQueue.main.async {
             let alertController = UIAlertController(title: alert.title, message: alert.description, preferredStyle: .alert)
             alertController.addAction(UIAlertAction(title: "OK", style: UIAlertAction.Style.default))
             self.viewController?.present(alertController, animated: true, completion: nil)
-        //}
     }
 }

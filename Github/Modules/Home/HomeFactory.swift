@@ -18,7 +18,7 @@ struct HomeFactory {
         let userImageService = UserImageService(networkSession: networkSession)
         let userReposService = UserReposService(networkSession: networkSession)
         
-        let interactor = HomeInteractor(presenter: presenter, networkSession: networkSession, userInfoService: userInfoService as! UserInfoServiceProtocol, userImageService: userImageService as! UserImageServiceProtocol, userReposService: userReposService as! UserReposServiceProtocol)
+        let interactor = HomeInteractor(presenter: presenter, networkSession: networkSession, userInfoService: userInfoService, userImageService: userImageService, userReposService: userReposService)
         let view = HomeViewController(interactor: interactor)
         
 
